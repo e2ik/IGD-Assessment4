@@ -25,7 +25,7 @@ public class AudioManager : MonoBehaviour
         clips.clip = ghostMusic;
         clips.loop = true;
         clips.Play();
-        script.StartMovement();
+        if (script != null) { script.StartMovement(); }
 
     }
 }

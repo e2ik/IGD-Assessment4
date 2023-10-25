@@ -14,6 +14,12 @@ public class CenterCamera : MonoBehaviour
     {
         cam = Camera.main;
         level = GameObject.Find("GenerateLevel");
+        if (level == null) {
+            level = GameObject.Find("Level01");
+            numRows = 14;
+            numCols = 15;
+        }
+
         if (level != null) {
             levelGenerator = level.GetComponent<LevelGenerator>();
 
@@ -28,6 +34,5 @@ public class CenterCamera : MonoBehaviour
         setCamPos = new Vector3(lvlPos.x + newX, lvlPos.y - newY, lvlPos.z - 4);
         cam.transform.position = setCamPos;
         cam.orthographicSize = (float)(numRows + 1) + padding/10;
-
     }
 }
