@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private GameObject levelOneObject;
     [SerializeField] private GameObject levelTwoObject;
     private bool isPlaying = false;
+    public Text timerText;
 
     void Start() {
         levelOneObject = GameObject.FindGameObjectWithTag("Level1");
