@@ -8,6 +8,8 @@ TagManager:
   - Level2
   - returnButton
   - GameTimer
+  - GameScore
+  - GhostTimer
   layers:
   - Default
   - TransparentFX
