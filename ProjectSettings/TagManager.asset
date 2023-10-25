@@ -10,6 +10,7 @@ TagManager:
   - GameTimer
   - GameScore
   - GhostTimer
+  - Zombie
   layers:
   - Default
   - TransparentFX
