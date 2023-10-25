@@ -22,37 +22,24 @@ public class PacStudentController : MonoBehaviour {
     }
 
     void Update() {
+        // ! Need a Way to Store the key press
+
         if (Input.GetKeyDown(KeyCode.W)) {
-            currentDirection = MovementDirection.Up;
-            lastDirection = currentDirection;
-            animator.SetBool("movingUp", true);
-            endPosition = startPosition;
-            endPosition += Vector3.up * 1.0f;
-            StartCoroutine(nameof(Move));            
+            lastDirection = MovementDirection.Up;
+            MoveUp();          
         }
-        if (Input.GetKeyDown(KeyCode.S)) {
-            currentDirection = MovementDirection.Down;
-            lastDirection = currentDirection;
-            animator.SetBool("movingDown", true);
-            endPosition = startPosition;
-            endPosition += Vector3.down * 1.0f;
-            StartCoroutine(nameof(Move)); 
+        if (Input.GetKeyDown(KeyCode.S)) {            
+            lastDirection = MovementDirection.Down;
+            MoveDown();
+            
         }
-        if (Input.GetKeyDown(KeyCode.A)) {
-            currentDirection = MovementDirection.Left;
-            lastDirection = currentDirection;
-            animator.SetBool("movingLeft", true);
-            endPosition = startPosition;
-            endPosition += Vector3.left * 1.0f;
-            StartCoroutine(nameof(Move)); 
+        if (Input.GetKeyDown(KeyCode.A)) {            
+            lastDirection = MovementDirection.Left;
+            MoveLeft();
         }
         if (Input.GetKeyDown(KeyCode.D)) {
-            currentDirection = MovementDirection.Right;
-            lastDirection = currentDirection;
-            animator.SetBool("movingRight", true);
-            endPosition = startPosition;
-            endPosition += Vector3.right * 1.0f;
-            StartCoroutine(nameof(Move)); 
+            lastDirection = MovementDirection.Right;
+            MoveRight();
         }
     }
 
@@ -66,6 +53,38 @@ public class PacStudentController : MonoBehaviour {
         }
     }
 
+    void MoveUp() {
+        currentDirection = MovementDirection.Up;
+        animator.SetBool("movingUp", true);
+        endPosition = startPosition;
+        endPosition += Vector3.up * 1.0f;
+        StartCoroutine(nameof(Move));  
+    }
+
+    void MoveDown() {
+        currentDirection = MovementDirection.Down;
+        animator.SetBool("movingDown", true);
+        endPosition = startPosition;
+        endPosition += Vector3.down * 1.0f;
+        StartCoroutine(nameof(Move)); 
+    }
+
+    void MoveLeft() {
+        currentDirection = MovementDirection.Left;
+        animator.SetBool("movingLeft", true);
+        endPosition = startPosition;
+        endPosition += Vector3.left * 1.0f;
+        StartCoroutine(nameof(Move)); 
+    }
+
+    void MoveRight() {
+        currentDirection = MovementDirection.Right;
+        animator.SetBool("movingRight", true);
+        endPosition = startPosition;
+        endPosition += Vector3.right * 1.0f;
+        StartCoroutine(nameof(Move)); 
+    }
+
     IEnumerator Move() {
         
         float distanceToMove = Vector3.Distance(transform.position, endPosition);
@@ -75,10 +94,7 @@ public class PacStudentController : MonoBehaviour {
         }
         startPosition = endPosition;
         yield return new WaitForSeconds(animDuration);
-        TurnOffAnimParameters();
-        currentDirection = MovementDirection.Idle;
-        //test
-        
+        TurnOffAnimParameters();      
 
     }
 
