@@ -31,27 +31,22 @@ public class GameManager : MonoBehaviour {
     }
 
     public void LoadFirstLevel() {
+        if (!SceneManager.GetSceneByBuildIndex(levelOneIndex).isLoaded) {
+            SceneManager.LoadScene(levelOneIndex);
+        }
+    }
 
-            if (!SceneManager.GetSceneByBuildIndex(levelOneIndex).isLoaded) {
-                SceneManager.LoadScene(levelOneIndex);
-            }
+    public void LoadSecondLevel() {
+        if (!SceneManager.GetSceneByBuildIndex(levelTwoIndex).isLoaded) {
+            SceneManager.LoadScene(levelTwoIndex);
+        }
+    }
 
+    public void LoadStartScene() {
+        if (!SceneManager.GetSceneByBuildIndex(startSceneIndex).isLoaded) {
+            SceneManager.LoadScene(startSceneIndex);
+        }
     }
 
     public void QuitGame() { UnityEditor.EditorApplication.isPlaying = false; }
-
-    // public void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-
-    //     if (scene.buildIndex == 1 || scene.buildIndex == 2 ) {
-    //         GameObject quitButtonObject = GameObject.FindGameObjectWithTag("QuitButton");
-    //         mainCam = Camera.main;
-
-
-    //         if (quitButtonObject != null) {
-    //             quitButton = quitButtonObject.GetComponent<Button>();
-
-    //             if (quitButton != null) { quitButton.onClick.AddListener(QuitGame); }
-    //         }
-    //     }
-    // }
 }
