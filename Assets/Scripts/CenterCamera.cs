@@ -16,7 +16,7 @@ public class CenterCamera : MonoBehaviour
         level = GameObject.Find("GenerateLevel");
         if (level == null) {
             level = GameObject.Find("Level01");
-            numRows = 14;
+            numRows = 15;
             numCols = 15;
         }
 
