@@ -48,13 +48,11 @@ public class PacStudentController : MonoBehaviour {
         if (lastInput == "Down" && canDown) { MoveDown(); }
         if (lastInput == "Up" && canUp) { MoveUp(); }
 
-        if (!canRight && canLeft) {
-            if (currentInput == "Right") { currentInput="ImpactRight"; impactPos = startPosition;}
-        }
+        if (!canRight && canLeft && !canUp && !canDown) { if (currentInput == "Right") { currentInput="ImpactRight"; impactPos = startPosition; }}
+        if (!canLeft && canRight && !canUp && !canDown) { if (currentInput == "Left") { currentInput="ImpactLeft"; impactPos = startPosition; }}
+        if (!canUp && canDown && !canLeft && !canRight) { if (currentInput == "Up") { currentInput="ImpactUp"; impactPos = startPosition; }}
+        if (!canDown && canUp && !canLeft && !canRight) { if (currentInput == "Down") { currentInput="ImpactDown"; impactPos = startPosition; }}
 
-        if (!canLeft && canRight) {
-            if (currentInput == "Left") { currentInput="ImpactLeft"; impactPos = startPosition;}
-        }
 
         if (currentInput == "ImpactRight") {
             animator.SetBool("movingRight", true);
@@ -78,6 +76,28 @@ public class PacStudentController : MonoBehaviour {
             TurnOffAnimParameters();
         }
 
+       if (currentInput == "ImpactUp") {
+            animator.SetBool("movingUp", true);
+            endPosition = startPosition;
+            endPosition += Vector3.up * 0.5f;
+            float distanceToMove = Vector3.Distance(transform.position, endPosition);
+            float animDuration = distanceToMove / moveSpeed;
+            tweener.AddTween(transform, transform.position, endPosition, animDuration);
+            startPosition = impactPos;
+            TurnOffAnimParameters();
+        }
+
+       if (currentInput == "ImpactDown") {
+            animator.SetBool("movingDown", true);
+            endPosition = startPosition;
+            endPosition += Vector3.down * 0.5f;
+            float distanceToMove = Vector3.Distance(transform.position, endPosition);
+            float animDuration = distanceToMove / moveSpeed;
+            tweener.AddTween(transform, transform.position, endPosition, animDuration);
+            startPosition = impactPos;
+            TurnOffAnimParameters();
+        }
+
         if (currentInput == "BounceBack") {
             endPosition = impactPos;
             float distanceToMove = Vector3.Distance(transform.position, endPosition);
@@ -90,23 +110,29 @@ public class PacStudentController : MonoBehaviour {
 
 
         if (Input.GetKeyDown(KeyCode.W)) {
-            currentInput = "Up";
-            MoveUp();           
+            if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
+                currentInput = "Up";
+                MoveUp();
+            }
         }
         if (Input.GetKeyDown(KeyCode.S)) {  
-            if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {          
+            if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
                 currentInput = "Down";
                 MoveDown();
             }
             
         }
-        if (Input.GetKeyDown(KeyCode.A)) {            
-            currentInput = "Left";
-            MoveLeft();
+        if (Input.GetKeyDown(KeyCode.A)) {    
+            if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
+                currentInput = "Left";
+                MoveLeft();
+            }
         }
         if (Input.GetKeyDown(KeyCode.D)) {
-            currentInput = "Right";
-            MoveRight();
+            if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
+                currentInput = "Right";
+                MoveRight();
+            }
         }
     }
 
@@ -185,14 +211,14 @@ public class PacStudentController : MonoBehaviour {
         if (otherName.Contains("wall")) {
             Debug.Log("Wall Hit!");
             currentInput = "BounceBack";
-            Invoke(nameof(SetIdleText), 0.3f);
+            Invoke(nameof(SetIdleText), 0.2f);
         }
     }
 
     bool CheckCollision(Vector2 direction)
     {
         Vector2 startPos = transform.position;
-        float rayDistance = 0.5f; // Adjust this distance as needed
+        float rayDistance = 0.6f; // Adjust this distance as needed
         RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, wallLayer);
         Debug.DrawRay(startPos, direction * rayDistance, Color.red);
 
