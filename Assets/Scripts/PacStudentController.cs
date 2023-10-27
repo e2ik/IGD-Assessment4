@@ -6,12 +6,14 @@ public class PacStudentController : MonoBehaviour {
 
     private Animator animator;
     private AudioSource audioSource;
+    [SerializeField] private AudioClip[] audioClips;
     private Tweener tweener;
     private Vector3 startPosition;
     private Vector3 endPosition;
     [SerializeField] private float moveSpeed = 4.0f;
     [SerializeField] private bool isMoving = false;
     [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private LayerMask edibleLayer;
     [SerializeField] private string currentInput;
     [SerializeField] private string lastInput;
     private bool canRight = false;
@@ -24,6 +26,7 @@ public class PacStudentController : MonoBehaviour {
     [SerializeField] ParticleSystem ps;
 
     void Start() {
+        audioSource = GetComponent<AudioSource>();
         tweener = GetComponent<Tweener>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
@@ -37,7 +40,7 @@ public class PacStudentController : MonoBehaviour {
         if (currentInput.Contains("Impact")) {
             ps.Stop();
         }
-        
+
         if (CheckCollision(Vector2.up)) { canUp = false; } else { canUp = true; }
         if (CheckCollision(Vector2.down)) { canDown = false; } else { canDown = true; }
         if (CheckCollision(Vector2.left)) { canLeft = false; } else { canLeft = true; }
@@ -163,6 +166,14 @@ public class PacStudentController : MonoBehaviour {
             endPosition = startPosition;
             endPosition += Vector3.up * 1.0f;
             StartCoroutine(nameof(Move));
+
+            if (CheckSound(Vector2.up)) {
+                audioSource.clip = audioClips[1];
+                audioSource.Play();
+            } else {
+                audioSource.clip = audioClips[0];
+                audioSource.Play();
+            }
         }
     }
 
@@ -173,6 +184,14 @@ public class PacStudentController : MonoBehaviour {
             endPosition = startPosition;
             endPosition += Vector3.down * 1.0f;
             StartCoroutine(nameof(Move));
+
+            if (CheckSound(Vector2.down)) {
+                audioSource.clip = audioClips[1];
+                audioSource.Play();
+            } else {
+                audioSource.clip = audioClips[0];
+                audioSource.Play();
+            }
         }
     }
 
@@ -183,6 +202,14 @@ public class PacStudentController : MonoBehaviour {
             endPosition = startPosition;
             endPosition += Vector3.left * 1.0f;
             StartCoroutine(nameof(Move));
+
+            if (CheckSound(Vector2.left)) {
+                audioSource.clip = audioClips[1];
+                audioSource.Play();
+            } else {
+                audioSource.clip = audioClips[0];
+                audioSource.Play();
+            }
         }
     }
 
@@ -193,6 +220,14 @@ public class PacStudentController : MonoBehaviour {
             endPosition = startPosition;
             endPosition += Vector3.right * 1.0f;
             StartCoroutine(nameof(Move));
+
+            if (CheckSound(Vector2.right)) {
+                audioSource.clip = audioClips[1];
+                audioSource.Play();
+            } else {
+                audioSource.clip = audioClips[0];
+                audioSource.Play();
+            }
         }
         
     }
@@ -220,6 +255,9 @@ public class PacStudentController : MonoBehaviour {
         string otherName = other.gameObject.name.ToLower();
         if (otherName.Contains("wall")) {
             Debug.Log("Wall Hit!");
+            audioSource.clip = audioClips[2];
+            audioSource.loop = false;
+            audioSource.Play();
             currentInput = "BounceBack";
             Invoke(nameof(SetIdleText), 0.2f);
         }
@@ -232,9 +270,22 @@ public class PacStudentController : MonoBehaviour {
     bool CheckCollision(Vector2 direction)
     {
         Vector2 startPos = transform.position;
-        float rayDistance = 0.6f; // Adjust this distance as needed
+        float rayDistance = 0.6f;
         RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, wallLayer);
         Debug.DrawRay(startPos, direction * rayDistance, Color.red);
+
+        if (hit.collider != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool CheckSound(Vector2 direction) {
+        Vector2 startPos = transform.position;
+        float rayDistance = 0.6f;
+        RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, edibleLayer);
+        Debug.DrawRay(startPos, direction * rayDistance, Color.blue);
 
         if (hit.collider != null)
         {

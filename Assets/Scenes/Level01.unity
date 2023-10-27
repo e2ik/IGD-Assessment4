@@ -49176,11 +49176,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c274b21ee70f3354a8db285f9d6a0e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: f8a2adcb9118ef144a27fff9f7b79ea9, type: 3}
+  - {fileID: 8300000, guid: ae45baf7677d678489841b00bc16b49e, type: 3}
+  - {fileID: 8300000, guid: d7bfdebf70cba0845b80bb8714f43226, type: 3}
   moveSpeed: 4
   isMoving: 0
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
+  edibleLayer:
+    serializedVersion: 2
+    m_Bits: 128
   currentInput: 
   lastInput: 
   score: 0
