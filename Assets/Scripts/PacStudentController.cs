@@ -26,28 +26,29 @@ public class PacStudentController : MonoBehaviour {
     void Update() {
         // ! Need a Way to Store the key press
 
-        CheckCollision(Vector2.up);
-        CheckCollision(Vector2.down);
-        CheckCollision(Vector2.left);
-        CheckCollision(Vector2.right);
+        
+        if (CheckCollision(Vector2.up)) { Debug.Log("Wall at up"); }
+        if (CheckCollision(Vector2.down)) { Debug.Log("Wall at down"); }
+        if (CheckCollision(Vector2.left)) { Debug.Log("Wall at left"); }
+        if (CheckCollision(Vector2.right)) { Debug.Log("Wall at right"); }
 
 
         if (Input.GetKeyDown(KeyCode.W)) {
             lastDirection = MovementDirection.Up;
-            if (!isMoving) { MoveUp(); }            
+            if (!isMoving && !CheckCollision(Vector2.up)) { MoveUp(); }            
         }
         if (Input.GetKeyDown(KeyCode.S)) {            
             lastDirection = MovementDirection.Down;
-            if (!isMoving) { MoveDown(); }
+            if (!isMoving && !CheckCollision(Vector2.down)) { MoveDown(); }
             
         }
         if (Input.GetKeyDown(KeyCode.A)) {            
             lastDirection = MovementDirection.Left;
-            if (!isMoving) { MoveLeft(); }
+            if (!isMoving && !CheckCollision(Vector2.left)) { MoveLeft(); }
         }
         if (Input.GetKeyDown(KeyCode.D)) {
             lastDirection = MovementDirection.Right;
-            if (!isMoving) { MoveRight(); }
+            if (!isMoving && !CheckCollision(Vector2.right)) { MoveRight(); }
         }
     }
 
@@ -112,7 +113,7 @@ public class PacStudentController : MonoBehaviour {
         Debug.Log(other.gameObject.name);
     }
 
-    void CheckCollision(Vector2 direction)
+    bool CheckCollision(Vector2 direction)
     {
         Vector2 startPos = transform.position;
         float rayDistance = 1.0f; // Adjust this distance as needed
@@ -121,9 +122,9 @@ public class PacStudentController : MonoBehaviour {
 
         if (hit.collider != null)
         {
-            // A collision occurred in the specified direction
-            Debug.Log("Wall Collision detected in direction: " + direction);
+            return true;
         }
+        return false;
     }
 
 }

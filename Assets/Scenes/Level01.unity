@@ -44411,7 +44411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentDirection: 0
   lastDirection: 0
-  moveSpeed: 4
+  moveSpeed: 1
   isMoving: 0
   wallLayer:
     serializedVersion: 2
