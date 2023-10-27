@@ -248,8 +248,7 @@ public class PacStudentController : MonoBehaviour {
         currentInput = "Idle";
     }
 
-    void OnCollisionEnter2D(Collision2D other)
-    {
+    void OnCollisionEnter2D(Collision2D other) {
         // Debug.Log(other.gameObject.name);
         string otherName = other.gameObject.name.ToLower();
         if (otherName.Contains("wall")) {
@@ -274,11 +273,16 @@ public class PacStudentController : MonoBehaviour {
             audioSource.clip = audioClips[1];
             audioSource.Play();
             score += LevelManager.cherry;
+            CherryController.isCherryEaten = true;
+            Invoke(nameof(setCherryTime), 1.0f);
         }
     }
 
-    bool CheckCollision(Vector2 direction)
-    {
+    void setCherryTime() {
+        CherryController.isCherryEaten = false;
+    }
+
+    bool CheckCollision(Vector2 direction) {
         Vector2 startPos = transform.position;
         float rayDistance = 0.6f;
         RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, wallLayer);

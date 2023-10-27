@@ -9,18 +9,20 @@ public class CherryController : MonoBehaviour {
     [SerializeField] private Vector3 targetPos;
     [SerializeField] private float lerpDuration = 5.0f;
     [SerializeField] private Vector3 cameraMiddlePos;
+    public static bool isCherryEaten = false;
 
     private float lerpStartTime;
     private bool isMoving = false;
 
     void Update() {
         int combinedTime = levelMgr.timerSecond + (levelMgr.timerMinute * 60);
+        Debug.Log(isCherryEaten);
 
         if (currentCherry == null) {
             hasSpawned = false;
         }
 
-        if (levelMgr.timerSecond % 10 == 0 && combinedTime > 0 && !hasSpawned) {
+        if (levelMgr.timerSecond % 10 == 0 && combinedTime > 0 && !hasSpawned && !isCherryEaten) {
             spawnPos = CalculateSpawn();
             currentCherry = Instantiate(cherryObject, spawnPos, Quaternion.identity);
             hasSpawned = true;
