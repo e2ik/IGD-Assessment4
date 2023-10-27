@@ -20,17 +20,23 @@ public class PacStudentController : MonoBehaviour {
     private bool canDown = false;
     private bool isImpact = false;
     private Vector3 impactPos;
+    public int score;
+    [SerializeField] ParticleSystem ps;
 
     void Start() {
         tweener = GetComponent<Tweener>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
         currentInput = "Idle";
+        ps.Stop();
     }
 
     void Update() {
         // ! Need a Way to Store the key press
 
+        if (currentInput.Contains("Impact")) {
+            ps.Stop();
+        }
         
         if (CheckCollision(Vector2.up)) { canUp = false; } else { canUp = true; }
         if (CheckCollision(Vector2.down)) { canDown = false; } else { canDown = true; }
@@ -112,12 +118,14 @@ public class PacStudentController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.W)) {
             if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
                 currentInput = "Up";
+                ps.Play();
                 MoveUp();
             }
         }
         if (Input.GetKeyDown(KeyCode.S)) {  
             if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
                 currentInput = "Down";
+                ps.Play();
                 MoveDown();
             }
             
@@ -125,12 +133,14 @@ public class PacStudentController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.A)) {    
             if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
                 currentInput = "Left";
+                ps.Play();
                 MoveLeft();
             }
         }
         if (Input.GetKeyDown(KeyCode.D)) {
             if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
                 currentInput = "Right";
+                ps.Play();
                 MoveRight();
             }
         }
@@ -212,6 +222,10 @@ public class PacStudentController : MonoBehaviour {
             Debug.Log("Wall Hit!");
             currentInput = "BounceBack";
             Invoke(nameof(SetIdleText), 0.2f);
+        }
+
+        if (otherName.Contains("pellet")) {
+            Destroy(other.gameObject);
         }
     }
 

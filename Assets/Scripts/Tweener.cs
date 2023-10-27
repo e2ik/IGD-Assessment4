@@ -26,12 +26,6 @@ public class Tweener : MonoBehaviour
         return false;
     }
 
-    public void RemoveTween(Transform targetObject) {
-        if (TweenExists(targetObject)) {
-            activeTweens.Clear();
-        }
-    }
-
     private float EaseInCubic(float f) { return f * f * f; }
 
     void Start() {}
@@ -41,7 +35,7 @@ public class Tweener : MonoBehaviour
             Tween tween = activeTweens[i];
             float distance = Vector3.Distance(tween.Target.position, tween.EndPos);
 
-            if (distance > 0.1f) {
+            if (distance > 0.01f) {
                 // essentialy Current time - Time when tween added
                 float elapsedTime = Time.time - tween.StartTime; 
                 float interpFraction = elapsedTime / tween.Duration; // tween Duration either 1.5f or 0.5f for our exercise
