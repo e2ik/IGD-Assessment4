@@ -44411,11 +44411,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentDirection: 0
   lastDirection: 0
-  moveSpeed: 1
+  moveSpeed: 4
   isMoving: 0
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
+  directionString: 
+  storedDirection: []
 --- !u!50 &1948569673
 Rigidbody2D:
   serializedVersion: 4
