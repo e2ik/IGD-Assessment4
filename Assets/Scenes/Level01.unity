@@ -5140,6 +5140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: 
+  timerSecond: 0
   timerTextTMP: {fileID: 0}
   scoreTextTMP: {fileID: 0}
   psc: {fileID: 1948569672}
@@ -9795,6 +9796,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6660805893105927228, guid: f0f9db13aa6899148ae00ed0d11a61c9, type: 3}
   m_PrefabInstance: {fileID: 383870255}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &386170333
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 386170335}
+  - component: {fileID: 386170334}
+  m_Layer: 0
+  m_Name: CherrySpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &386170334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386170333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a88faddf40df649468e535cf428e1e40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cherryObject: {fileID: 8426705846569495131, guid: 208ee19524e330844a6d098e645dcc9b, type: 3}
+  currentCherry: {fileID: 0}
+  levelMgr: {fileID: 210036606}
+--- !u!4 &386170335
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386170333}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &391079294
 PrefabInstance:
   m_ObjectHideFlags: 0

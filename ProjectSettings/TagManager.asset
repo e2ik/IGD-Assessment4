@@ -11,6 +11,7 @@ TagManager:
   - GameScore
   - GhostTimer
   - Zombie
+  - Cherry
   layers:
   - Default
   - TransparentFX

@@ -268,6 +268,11 @@ public class PacStudentController : MonoBehaviour {
             Destroy (other.gameObject);
             score += LevelManager.pellet;
         }
+
+        if (otherName.Contains("cherry")) {
+            Destroy(other.gameObject);
+            score += LevelManager.cherry;
+        }
     }
 
     bool CheckCollision(Vector2 direction)
