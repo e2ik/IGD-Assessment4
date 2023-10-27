@@ -13,6 +13,8 @@ public class PacStudentController : MonoBehaviour {
     private Vector3 startPosition;
     private Vector3 endPosition;
     [SerializeField] private float moveSpeed = 4.0f;
+    [SerializeField] private bool isMoving = false;
+    [SerializeField] private LayerMask wallLayer;
 
     void Start() {
         tweener = GetComponent<Tweener>();
@@ -24,22 +26,28 @@ public class PacStudentController : MonoBehaviour {
     void Update() {
         // ! Need a Way to Store the key press
 
+        CheckCollision(Vector2.up);
+        CheckCollision(Vector2.down);
+        CheckCollision(Vector2.left);
+        CheckCollision(Vector2.right);
+
+
         if (Input.GetKeyDown(KeyCode.W)) {
             lastDirection = MovementDirection.Up;
-            MoveUp();          
+            if (!isMoving) { MoveUp(); }            
         }
         if (Input.GetKeyDown(KeyCode.S)) {            
             lastDirection = MovementDirection.Down;
-            MoveDown();
+            if (!isMoving) { MoveDown(); }
             
         }
         if (Input.GetKeyDown(KeyCode.A)) {            
             lastDirection = MovementDirection.Left;
-            MoveLeft();
+            if (!isMoving) { MoveLeft(); }
         }
         if (Input.GetKeyDown(KeyCode.D)) {
             lastDirection = MovementDirection.Right;
-            MoveRight();
+            if (!isMoving) { MoveRight(); }
         }
     }
 
@@ -86,7 +94,7 @@ public class PacStudentController : MonoBehaviour {
     }
 
     IEnumerator Move() {
-        
+        isMoving = true;
         float distanceToMove = Vector3.Distance(transform.position, endPosition);
         float animDuration = distanceToMove / moveSpeed;
         if (tweener != null) {
@@ -94,13 +102,28 @@ public class PacStudentController : MonoBehaviour {
         }
         startPosition = endPosition;
         yield return new WaitForSeconds(animDuration);
-        TurnOffAnimParameters();      
+        TurnOffAnimParameters();
+        isMoving = false;    
 
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
         Debug.Log(other.gameObject.name);
+    }
+
+    void CheckCollision(Vector2 direction)
+    {
+        Vector2 startPos = transform.position;
+        float rayDistance = 1.0f; // Adjust this distance as needed
+        RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.9f, 0.9f), 0f, direction, rayDistance, wallLayer);
+        Debug.DrawRay(startPos, direction * rayDistance, Color.red);
+
+        if (hit.collider != null)
+        {
+            // A collision occurred in the specified direction
+            Debug.Log("Wall Collision detected in direction: " + direction);
+        }
     }
 
 }
