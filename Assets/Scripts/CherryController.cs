@@ -7,7 +7,7 @@ public class CherryController : MonoBehaviour {
     private bool hasSpawned = false;
     [SerializeField] private Vector3 spawnPos;
     [SerializeField] private Vector3 targetPos;
-    [SerializeField] private float lerpDuration = 3.0f;
+    [SerializeField] private float lerpDuration = 5.0f;
     [SerializeField] private Vector3 cameraMiddlePos;
 
     private float lerpStartTime;
@@ -20,7 +20,7 @@ public class CherryController : MonoBehaviour {
             hasSpawned = false;
         }
 
-        if (levelMgr.timerSecond % 5 == 0 && combinedTime > 0 && !hasSpawned) {
+        if (levelMgr.timerSecond % 10 == 0 && combinedTime > 0 && !hasSpawned) {
             spawnPos = CalculateSpawn();
             currentCherry = Instantiate(cherryObject, spawnPos, Quaternion.identity);
             hasSpawned = true;

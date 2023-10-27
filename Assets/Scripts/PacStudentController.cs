@@ -271,6 +271,8 @@ public class PacStudentController : MonoBehaviour {
 
         if (otherName.Contains("cherry")) {
             Destroy(other.gameObject);
+            audioSource.clip = audioClips[1];
+            audioSource.Play();
             score += LevelManager.cherry;
         }
     }

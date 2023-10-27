@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour {
     public TextMeshProUGUI scoreTextTMP;
     public static readonly int pellet = 10;
     public static readonly int powerpellet = 50;
-    public static readonly int cherry = 200;
+    public static readonly int cherry = 100;
     public PacStudentController psc;
 
     void Start() {
