@@ -5141,6 +5141,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: 
   timerTextTMP: {fileID: 0}
+  scoreTextTMP: {fileID: 0}
+  psc: {fileID: 1948569672}
 --- !u!1001 &210566678
 PrefabInstance:
   m_ObjectHideFlags: 0

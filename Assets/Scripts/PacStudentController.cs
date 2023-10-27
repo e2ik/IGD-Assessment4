@@ -20,7 +20,6 @@ public class PacStudentController : MonoBehaviour {
     private bool canLeft = false;
     private bool canUp = false;
     private bool canDown = false;
-    private bool isImpact = false;
     private Vector3 impactPos;
     public int score;
     [SerializeField] ParticleSystem ps;
@@ -262,8 +261,12 @@ public class PacStudentController : MonoBehaviour {
             Invoke(nameof(SetIdleText), 0.2f);
         }
 
-        if (otherName.Contains("pellet")) {
+        if (otherName.Contains("power")) {
             Destroy(other.gameObject);
+            score += LevelManager.powerpellet;
+        } else if (otherName.Contains("pellet")){
+            Destroy (other.gameObject);
+            score += LevelManager.pellet;
         }
     }
 
