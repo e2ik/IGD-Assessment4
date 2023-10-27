@@ -26,6 +26,12 @@ public class Tweener : MonoBehaviour
         return false;
     }
 
+    public void RemoveTween(Transform targetObject) {
+        if (TweenExists(targetObject)) {
+            activeTweens.Clear();
+        }
+    }
+
     private float EaseInCubic(float f) { return f * f * f; }
 
     void Start() {}

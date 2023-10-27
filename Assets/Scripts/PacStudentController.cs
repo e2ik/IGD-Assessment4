@@ -18,6 +18,8 @@ public class PacStudentController : MonoBehaviour {
     private bool canLeft = false;
     private bool canUp = false;
     private bool canDown = false;
+    private bool isImpact = false;
+    private Vector3 impactPos;
 
     void Start() {
         tweener = GetComponent<Tweener>();
@@ -46,20 +48,56 @@ public class PacStudentController : MonoBehaviour {
         if (lastInput == "Down" && canDown) { MoveDown(); }
         if (lastInput == "Up" && canUp) { MoveUp(); }
 
-        if (canRight) {
-            if (lastInput == "Right") { MoveRight(); }
-            else if ( currentInput == "Down") { MoveDown(); }
+        if (!canRight && canLeft) {
+            if (currentInput == "Right") { currentInput="ImpactRight"; impactPos = startPosition;}
         }
 
-        if (currentInput == "Down" && canDown) { MoveDown(); }
+        if (!canLeft && canRight) {
+            if (currentInput == "Left") { currentInput="ImpactLeft"; impactPos = startPosition;}
+        }
+
+        if (currentInput == "ImpactRight") {
+            animator.SetBool("movingRight", true);
+            endPosition = startPosition;
+            endPosition += Vector3.right * 0.5f;
+            float distanceToMove = Vector3.Distance(transform.position, endPosition);
+            float animDuration = distanceToMove / moveSpeed;
+            tweener.AddTween(transform, transform.position, endPosition, animDuration);
+            startPosition = impactPos;
+            TurnOffAnimParameters();
+        }
+
+        if (currentInput == "ImpactLeft") {
+            animator.SetBool("movingLeft", true);
+            endPosition = startPosition;
+            endPosition += Vector3.left * 0.5f;
+            float distanceToMove = Vector3.Distance(transform.position, endPosition);
+            float animDuration = distanceToMove / moveSpeed;
+            tweener.AddTween(transform, transform.position, endPosition, animDuration);
+            startPosition = impactPos;
+            TurnOffAnimParameters();
+        }
+
+        if (currentInput == "BounceBack") {
+            endPosition = impactPos;
+            float distanceToMove = Vector3.Distance(transform.position, endPosition);
+            float animDuration = distanceToMove / moveSpeed;
+            tweener.AddTween(transform, transform.position, endPosition, animDuration);
+            startPosition = impactPos;
+            TurnOffAnimParameters();
+
+        }
+
 
         if (Input.GetKeyDown(KeyCode.W)) {
             currentInput = "Up";
             MoveUp();           
         }
-        if (Input.GetKeyDown(KeyCode.S)) {            
-            currentInput = "Down";
-            MoveDown();
+        if (Input.GetKeyDown(KeyCode.S)) {  
+            if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {          
+                currentInput = "Down";
+                MoveDown();
+            }
             
         }
         if (Input.GetKeyDown(KeyCode.A)) {            
@@ -136,16 +174,26 @@ public class PacStudentController : MonoBehaviour {
         isMoving = false;
     }
 
+    void SetIdleText() {
+        currentInput = "Idle";
+    }
+
     void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log(other.gameObject.name);
+        // Debug.Log(other.gameObject.name);
+        string otherName = other.gameObject.name.ToLower();
+        if (otherName.Contains("wall")) {
+            Debug.Log("Wall Hit!");
+            currentInput = "BounceBack";
+            Invoke(nameof(SetIdleText), 0.3f);
+        }
     }
 
     bool CheckCollision(Vector2 direction)
     {
         Vector2 startPos = transform.position;
-        float rayDistance = 1.0f; // Adjust this distance as needed
-        RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.9f, 0.9f), 0f, direction, rayDistance, wallLayer);
+        float rayDistance = 0.5f; // Adjust this distance as needed
+        RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, wallLayer);
         Debug.DrawRay(startPos, direction * rayDistance, Color.red);
 
         if (hit.collider != null)
