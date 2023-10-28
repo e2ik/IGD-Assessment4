@@ -56,7 +56,6 @@ public class LevelManager : MonoBehaviour {
         foreach (GameObject go in allGameObjects) {
             if (go.name.ToLower().Contains("pellet")) { numOfPellets++; }
         }
-        startTime = Time.time;
         GameObject timer = GameObject.FindWithTag("GameTimer");
         if ( timer != null ) { timerTextTMP = timer.GetComponent<TextMeshProUGUI>(); }
         GameObject scoreObj = GameObject.FindWithTag("GameScore");
@@ -88,6 +87,8 @@ public class LevelManager : MonoBehaviour {
         PauseGame = false;
         GameObject levelStartObj = GameObject.FindWithTag("LevelStart");
         if (levelStartObj != null) { levelStartObj.SetActive(false); }
+        startTime = Time.time;
+        
     }
 
     void Update() {

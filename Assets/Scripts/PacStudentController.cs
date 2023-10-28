@@ -26,6 +26,7 @@ public class PacStudentController : MonoBehaviour {
     public int score;
     [SerializeField] private ParticleSystem ps;
     [SerializeField] private ParticleSystem wallps;
+    [SerializeField] private ParticleSystem deadSplat;
     [SerializeField] private GameObject leftPort;
     [SerializeField] private GameObject rightPort;
     [SerializeField] private LevelManager lvlMgr;
@@ -313,6 +314,7 @@ public class PacStudentController : MonoBehaviour {
                     score += LevelManager.ghost;
                 } else if (lvlMgr.RedGhost.currentState == GhostStates.State.normal) {
                     ps.Stop();
+                    deadSplat.Play();
                     lvlMgr.PauseGame = true;
                     currentInput = "Idle";
                     lastInput = "Idle";
@@ -328,6 +330,7 @@ public class PacStudentController : MonoBehaviour {
                     score += LevelManager.ghost;
                 } else if (lvlMgr.BlueGhost.currentState == GhostStates.State.normal) {
                     ps.Stop();
+                    deadSplat.Play();
                     lvlMgr.PauseGame = true;
                     currentInput = "Idle";
                     lastInput = "Idle";
@@ -343,6 +346,7 @@ public class PacStudentController : MonoBehaviour {
                     score += LevelManager.ghost;
                 } else if (lvlMgr.PinkGhost.currentState == GhostStates.State.normal) {
                     ps.Stop();
+                    deadSplat.Play();
                     lvlMgr.PauseGame = true;
                     currentInput = "Idle";
                     lastInput = "Idle";
@@ -358,6 +362,7 @@ public class PacStudentController : MonoBehaviour {
                     score += LevelManager.ghost;
                 } else if (lvlMgr.OrangeGhost.currentState == GhostStates.State.normal) {
                     ps.Stop();
+                    deadSplat.Play();
                     lvlMgr.PauseGame = true;
                     currentInput = "Idle";
                     lastInput = "Idle";
