@@ -15,7 +15,6 @@ public class GhostStates : MonoBehaviour {
     }
 
     void Update() {
-        Debug.Log(gameObject.name + "'s current state is: " + currentState);
         ScaredState();
         NormalState();
         RecoverState();

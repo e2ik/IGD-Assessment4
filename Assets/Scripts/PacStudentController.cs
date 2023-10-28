@@ -297,6 +297,19 @@ public class PacStudentController : MonoBehaviour {
             CherryController.isCherryEaten = true;
             Invoke(nameof(setCherryTime), 1.0f);
         }
+
+        if (otherName.Contains("hunter")) {
+            Debug.Log(otherName);
+
+            if (otherName.Contains("red")) {
+                if (lvlMgr.RedGhost.currentState == GhostStates.State.scared || lvlMgr.RedGhost.currentState == GhostStates.State.recover) {
+                    lvlMgr.RedGhost.currentState = GhostStates.State.eaten;
+                    lvlMgr.hasEaten++;
+                    score += LevelManager.ghost;
+                }
+            }
+
+        }
     }
 
     void setCherryTime() {

@@ -12,12 +12,14 @@ public class LevelManager : MonoBehaviour {
     private float startTime;
     public GameObject ghostTimerPanel;
     public float countdown = 10.0f;
+    public float deadtime = 5.0f;
     public TextMeshProUGUI timerTextTMP;
     public TextMeshProUGUI scoreTextTMP;
     public TextMeshProUGUI ghostTimerTMP;
     public static readonly int pellet = 10;
     public static readonly int powerpellet = 50;
     public static readonly int cherry = 100;
+    public static readonly int ghost = 300;
     public PacStudentController psc;
     public LayerMask edibleLayer;
     public int numOfPellets = 0;
@@ -27,6 +29,7 @@ public class LevelManager : MonoBehaviour {
     public GhostStates OrangeGhost;
     [SerializeField] private GhostStates[] allGhosts;
     public bool powerPelletEaten = false;
+    public int hasEaten = 0;
 
     void Start() {
         
@@ -47,7 +50,18 @@ public class LevelManager : MonoBehaviour {
         setTime();
         setScore();
         if (powerPelletEaten) { ghostTimerPanel.SetActive(true); StartScared(); } else {ghostTimerPanel.SetActive(false);}
+        if (hasEaten > 0) { StartCoroutine(nameof(EatenTimer)); }
         
+    }
+
+    IEnumerator EatenTimer() {
+        yield return new WaitForSeconds(deadtime);
+        foreach (GhostStates gs in allGhosts) {
+            if (gs.currentState == GhostStates.State.eaten) {
+                gs.currentState = GhostStates.State.normal;
+                hasEaten--;
+            }
+        }
     }
 
     void StartScared() {

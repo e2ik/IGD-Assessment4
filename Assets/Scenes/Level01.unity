@@ -5152,6 +5152,7 @@ MonoBehaviour:
   timerMinute: 0
   ghostTimerPanel: {fileID: 92168090}
   countdown: 10
+  deadtime: 5
   timerTextTMP: {fileID: 0}
   scoreTextTMP: {fileID: 0}
   ghostTimerTMP: {fileID: 0}
@@ -5170,6 +5171,7 @@ MonoBehaviour:
   - {fileID: 1492294830}
   - {fileID: 2110433766}
   powerPelletEaten: 0
+  hasEaten: 0
 --- !u!1001 &210566678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7388,11 +7390,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6117212576071012728, guid: daf99255867776645815d237efd04892, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.46
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6117212576071012728, guid: daf99255867776645815d237efd04892, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.87
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6117212576071012728, guid: daf99255867776645815d237efd04892, type: 3}
       propertyPath: m_LocalPosition.z
