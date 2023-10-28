@@ -270,7 +270,6 @@ public class PacStudentController : MonoBehaviour {
             Vector3 collisionPoint = other.contacts[0].point;
             wallps.transform.position = collisionPoint;
             wallps.Play();
-            Debug.Log("Wall Hit!");
             audioSource.clip = audioClips[2];
             audioSource.loop = false;
             audioSource.Play();
@@ -282,7 +281,9 @@ public class PacStudentController : MonoBehaviour {
             Destroy(other.gameObject);
             score += LevelManager.powerpellet;
             lvlMgr.numOfPellets--;
-        } else if (otherName.Contains("pellet")){
+            lvlMgr.countdown = 10.0f;
+            lvlMgr.powerPelletEaten = true;
+        } else if (otherName.Contains("pellet")) {
             Destroy (other.gameObject);
             score += LevelManager.pellet;
             lvlMgr.numOfPellets--;
