@@ -16,11 +16,8 @@ public class CherryController : MonoBehaviour {
 
     void Update() {
         int combinedTime = levelMgr.timerSecond + (levelMgr.timerMinute * 60);
-        Debug.Log(isCherryEaten);
 
-        if (currentCherry == null) {
-            hasSpawned = false;
-        }
+        if (currentCherry == null) { hasSpawned = false; }
 
         if (levelMgr.timerSecond % 10 == 0 && combinedTime > 0 && !hasSpawned && !isCherryEaten) {
             spawnPos = CalculateSpawn();
@@ -76,7 +73,7 @@ public class CherryController : MonoBehaviour {
                 break;
         }
         spawnPos = new Vector3(randomX, randomY, 0f);
-        // adjustments
+        // adjustments, currently it spawns off center... probably due to the way I'm moving the camera.
         spawnPos += new Vector3(-1f, -4f, 0f);
         return spawnPos;
     }

@@ -16,6 +16,10 @@ public class Tweener : MonoBehaviour
         return false;
     }
 
+    public void KillAllTweens() {
+        activeTweens.Clear();
+    }
+
     // Changing AddTween to bool so InputManager can perform the add if Tween does not exist
     public bool AddTween(Transform targetObject, Vector3 startPos, Vector3 endPos, float duration) {
         if (!TweenExists(targetObject)) {

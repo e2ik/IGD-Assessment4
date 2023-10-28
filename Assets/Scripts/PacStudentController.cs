@@ -34,12 +34,23 @@ public class PacStudentController : MonoBehaviour {
         ps.Stop();
     }
 
+    void setInput() {
+        currentInput = "Left";
+        MoveLeft();
+    }
+
     void Update() {
-        // ! Need a Way to Store the key press
 
         if (currentInput.Contains("Impact")) {
             ps.Stop();
         }
+
+        // if (currentInput == "LeftTeleporter") {
+        //     GameObject leftPort = GameObject.Find("LeftTeleporter");
+        //     GameObject rightPort = GameObject.Find("RightTeleporter");
+        //     transform.position = rightPort.transform.position;
+        //     Invoke(nameof(setInput), 0.5f);
+        // }
 
         if (CheckCollision(Vector2.up)) { canUp = false; } else { canUp = true; }
         if (CheckCollision(Vector2.down)) { canDown = false; } else { canDown = true; }
@@ -298,6 +309,47 @@ public class PacStudentController : MonoBehaviour {
         }
         return false;
     }
+
+    void OnTriggerEnter2D(Collider2D other) {
+        
+        Debug.Log(other.gameObject.name);
+        if (other.gameObject.name == "LeftTeleporterSet") {
+            if (currentInput == "Left") { currentInput = "Up"; }        }
+
+        if (other.gameObject.name ==  "RightTeleporterSet") {
+            if (currentInput == "Right") { currentInput = "Up"; }
+        }
+
+        if (other.gameObject.name == "WallLeftTeleportStop") {
+            currentInput = "Idle";
+            lastInput = "Idle";
+            tweener.KillAllTweens();
+            CancelInvoke();
+            Invoke(nameof(tpLeft), 0f);
+        }
+        if (other.gameObject.name == "WallRightTeleportStop") {
+            currentInput = "Idle";
+            lastInput = "Idle";
+            tweener.KillAllTweens();
+            CancelInvoke();
+            Invoke(nameof(tpRight), 0f);
+        }
+    }
+
+    void tpLeft() {
+        transform.Translate(Vector3.right*27f);
+        startPosition = transform.position;
+        tweener.KillAllTweens();
+        currentInput = "Left";
+    }
+
+    void tpRight() {
+        transform.Translate(Vector3.right*-27f);
+        startPosition = transform.position;
+        tweener.KillAllTweens();
+        currentInput = "Right";
+    }
+
 
     bool CheckSound(Vector2 direction) {
         Vector2 startPos = transform.position;
