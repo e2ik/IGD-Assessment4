@@ -5150,6 +5150,8 @@ MonoBehaviour:
   timerText: 
   timerSecond: 0
   timerMinute: 0
+  ghostTimerPanel: {fileID: 92168090}
+  countdown: 10
   timerTextTMP: {fileID: 0}
   scoreTextTMP: {fileID: 0}
   ghostTimerTMP: {fileID: 0}
@@ -5167,10 +5169,7 @@ MonoBehaviour:
   - {fileID: 1706865876}
   - {fileID: 1492294830}
   - {fileID: 2110433766}
-  isNormal: 0
-  isScared: 0
-  isRecover: 0
-  isEaten: 0
+  powerPelletEaten: 0
 --- !u!1001 &210566678
 PrefabInstance:
   m_ObjectHideFlags: 0

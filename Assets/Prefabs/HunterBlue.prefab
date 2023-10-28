@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6959411015478452236}
   - component: {fileID: 6959411015478452237}
   - component: {fileID: -4288973847613563390}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HunterBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}

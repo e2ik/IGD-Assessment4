@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4691411187217161909}
   - component: {fileID: 4691411187217161908}
   - component: {fileID: -7516489244541257294}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HunterPink
   m_TagString: Untagged
   m_Icon: {fileID: 0}

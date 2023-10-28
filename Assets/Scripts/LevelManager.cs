@@ -61,17 +61,23 @@ public class LevelManager : MonoBehaviour {
         }
         foreach (GhostStates gs in allGhosts) {
             if (countdown == 0) {
-                gs.currentState = GhostStates.State.normal;
+                if (gs.currentState != GhostStates.State.eaten) {
+                    gs.currentState = GhostStates.State.normal;
+                }
                 powerPelletEaten = false;
                 ghostTimerPanel.SetActive(false);
             }
 
             else if (countdown <= 3) {
-                gs.currentState = GhostStates.State.recover;
+                if (gs.currentState != GhostStates.State.eaten && gs.currentState != GhostStates.State.recover) {
+                    gs.currentState = GhostStates.State.recover;
+                }
             }
 
             else if (countdown <= 10) {
-                gs.currentState = GhostStates.State.scared;
+                if (gs.currentState != GhostStates.State.eaten && gs.currentState != GhostStates.State.scared) {
+                    gs.currentState = GhostStates.State.scared;
+                }
             }
         }
 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6627151920502704200}
   - component: {fileID: 6627151920502704201}
   - component: {fileID: 8004795435585661724}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HunterOrange
   m_TagString: Untagged
   m_Icon: {fileID: 0}

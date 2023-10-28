@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6117212576071012731}
   - component: {fileID: 6117212576071012730}
   - component: {fileID: -495898233150541118}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HunterRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
