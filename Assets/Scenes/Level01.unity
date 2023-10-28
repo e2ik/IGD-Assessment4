@@ -54595,6 +54595,8 @@ MonoBehaviour:
   score: 0
   ps: {fileID: 1528484287}
   wallps: {fileID: 930309381}
+  leftPort: {fileID: 1788187758}
+  rightPort: {fileID: 1063146634}
 --- !u!50 &1948569673
 Rigidbody2D:
   serializedVersion: 4

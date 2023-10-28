@@ -24,6 +24,8 @@ public class PacStudentController : MonoBehaviour {
     public int score;
     [SerializeField] private ParticleSystem ps;
     [SerializeField] private ParticleSystem wallps;
+    [SerializeField] private GameObject leftPort;
+    [SerializeField] private GameObject rightPort;
 
     void Start() {
         audioSource = GetComponent<AudioSource>();
@@ -311,23 +313,22 @@ public class PacStudentController : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        
         Debug.Log(other.gameObject.name);
         if (other.gameObject.name == "LeftTeleporterSet") {
-            if (currentInput == "Left") { currentInput = "Up"; }        }
-
-        if (other.gameObject.name ==  "RightTeleporterSet") {
+            if (currentInput == "Left") { currentInput = "Up"; }
+        } else if (other.gameObject.name ==  "RightTeleporterSet") {
             if (currentInput == "Right") { currentInput = "Up"; }
         }
 
         if (other.gameObject.name == "WallLeftTeleportStop") {
+            rightPort.SetActive(false);
             currentInput = "Idle";
             lastInput = "Idle";
             tweener.KillAllTweens();
             CancelInvoke();
             Invoke(nameof(tpLeft), 0f);
-        }
-        if (other.gameObject.name == "WallRightTeleportStop") {
+        } else if (other.gameObject.name == "WallRightTeleportStop") {
+            leftPort.SetActive(false);
             currentInput = "Idle";
             lastInput = "Idle";
             tweener.KillAllTweens();
@@ -341,6 +342,7 @@ public class PacStudentController : MonoBehaviour {
         startPosition = transform.position;
         tweener.KillAllTweens();
         currentInput = "Left";
+        Invoke(nameof(activatePort), 0.5f);
     }
 
     void tpRight() {
@@ -348,6 +350,12 @@ public class PacStudentController : MonoBehaviour {
         startPosition = transform.position;
         tweener.KillAllTweens();
         currentInput = "Right";
+        Invoke(nameof(activatePort), 0.5f);
+    }
+
+    void activatePort() {
+        rightPort.SetActive(true);
+        leftPort.SetActive(true);
     }
 
 
