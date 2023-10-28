@@ -16,7 +16,8 @@ public class GhostStates : MonoBehaviour {
     }
 
     void Update() {
-        if (lvlMgr.PauseGame == false) { UpdateGame(); }
+        if (!lvlMgr.PauseGame) { UpdateGame(); }
+        if (lvlMgr.isGameOver) { TurnOffAnimParameters(); animator.SetBool("isIdle", true); }
     }
 
     void UpdateGame() {
@@ -59,6 +60,16 @@ public class GhostStates : MonoBehaviour {
             animator.SetBool("isScared", false);
             animator.SetBool("isRecover", false);
             animator.SetBool("isEaten", true);
+        }
+    }
+
+    public void TurnOffAnimParameters() {
+        AnimatorControllerParameter[] parameters = animator.parameters;
+        foreach (AnimatorControllerParameter parameter in parameters) {
+                if (parameter.type == AnimatorControllerParameterType.Bool)
+                {
+                    animator.SetBool(parameter.name, false);
+                }
         }
     }
 

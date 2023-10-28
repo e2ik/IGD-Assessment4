@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour {
     public int timerMinute;
     private float startTime;
     public GameObject ghostTimerPanel;
+    public GameObject gameOverText;
     public float countdown = 10.0f;
     public float deadtime = 5.0f;
     public TextMeshProUGUI timerTextTMP;
@@ -41,6 +42,8 @@ public class LevelManager : MonoBehaviour {
     private bool isDeadPlaying = false;
     private bool isStartPlaying = false;
     public bool PauseGame = true;
+    public bool isGameOver = false;
+    public Button returnButton;
 
     void Start() {
         
@@ -84,6 +87,9 @@ public class LevelManager : MonoBehaviour {
     }
 
     void Update() {
+        if (isGameOver) {
+
+        }
         if (PauseGame) {
             if (!isStartPlaying) {
                 StartCoroutine(nameof(LevelStart));
@@ -215,4 +221,6 @@ public class LevelManager : MonoBehaviour {
     void setScore() {
         scoreTextTMP.text = psc.score.ToString();
     }
+
+
 }

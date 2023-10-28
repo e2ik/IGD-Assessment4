@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PacStudentController : MonoBehaviour {
 
@@ -43,14 +45,20 @@ public class PacStudentController : MonoBehaviour {
     }
 
     void Update() {
-        if (lvlMgr.PauseGame == false) { UpdateGame(); }
+        if (!lvlMgr.PauseGame) { UpdateGame(); }
     }
 
     void UpdateGame() {
 
+        if (lvlMgr.numOfPellets == 0) { lvlMgr.PauseGame = true; StartCoroutine(nameof(GameOver)); }
+
         if (currentInput.Contains("Impact")) {
             ps.Stop();
         }
+
+        if (currentInput == "Idle") {
+            animator.SetBool("isIdle", true);
+        } else { animator.SetBool("isIdle", false); }
 
         if (CheckCollision(Vector2.up)) { canUp = false; } else { canUp = true; }
         if (CheckCollision(Vector2.down)) { canDown = false; } else { canDown = true; }
@@ -304,6 +312,7 @@ public class PacStudentController : MonoBehaviour {
                     lvlMgr.hasEaten++;
                     score += LevelManager.ghost;
                 } else if (lvlMgr.RedGhost.currentState == GhostStates.State.normal) {
+                    ps.Stop();
                     lvlMgr.PauseGame = true;
                     currentInput = "Idle";
                     lastInput = "Idle";
@@ -317,6 +326,13 @@ public class PacStudentController : MonoBehaviour {
                     lvlMgr.BlueGhost.currentState = GhostStates.State.eaten;
                     lvlMgr.hasEaten++;
                     score += LevelManager.ghost;
+                } else if (lvlMgr.BlueGhost.currentState == GhostStates.State.normal) {
+                    ps.Stop();
+                    lvlMgr.PauseGame = true;
+                    currentInput = "Idle";
+                    lastInput = "Idle";
+                    tweener.KillAllTweens();
+                    StartCoroutine(nameof(respawn));
                 }
             }
 
@@ -325,6 +341,13 @@ public class PacStudentController : MonoBehaviour {
                     lvlMgr.PinkGhost.currentState = GhostStates.State.eaten;
                     lvlMgr.hasEaten++;
                     score += LevelManager.ghost;
+                } else if (lvlMgr.PinkGhost.currentState == GhostStates.State.normal) {
+                    ps.Stop();
+                    lvlMgr.PauseGame = true;
+                    currentInput = "Idle";
+                    lastInput = "Idle";
+                    tweener.KillAllTweens();
+                    StartCoroutine(nameof(respawn));
                 }
             }
 
@@ -333,14 +356,43 @@ public class PacStudentController : MonoBehaviour {
                     lvlMgr.OrangeGhost.currentState = GhostStates.State.eaten;
                     lvlMgr.hasEaten++;
                     score += LevelManager.ghost;
+                } else if (lvlMgr.OrangeGhost.currentState == GhostStates.State.normal) {
+                    ps.Stop();
+                    lvlMgr.PauseGame = true;
+                    currentInput = "Idle";
+                    lastInput = "Idle";
+                    tweener.KillAllTweens();
+                    StartCoroutine(nameof(respawn));
                 }
             }
-
         }
     }
 
     IEnumerator respawn() {
-        transform.Translate(-11.5f, 10f, 0f);
+        TurnOffAnimParameters();
+        animator.SetBool("isDead", true);
+        if (audioSource.isPlaying) {
+            audioSource.Stop();
+            audioSource.clip = audioClips[3];
+            audioSource.Play();
+        }
+        yield return new WaitForSeconds(1f);
+        lvlMgr.livesCount--;
+        if (lvlMgr.livesCount == 1) {
+            Destroy(GameObject.Find("LifeTwo"));
+        }
+        if (lvlMgr.livesCount == 0) {
+            Destroy(GameObject.Find("LifeOne"));
+        }
+        if (lvlMgr.livesCount == -1) {
+            StartCoroutine(nameof(GameOver));
+            lvlMgr.PauseGame = true;
+            yield break;
+        }
+        animator.SetBool("isDead", false);
+        animator.SetBool("isIdle", true);
+        transform.position = new Vector3(-14f, 9f, 0f);
+        transform.Translate(Vector3.zero);
         Vector3 currentPosition = transform.position;
         float roundedX = Mathf.Round(currentPosition.x);
         float roundedY = Mathf.Round(currentPosition.y);
@@ -350,6 +402,16 @@ public class PacStudentController : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         lvlMgr.PauseGame = false;
         tweener.KillAllTweens();        
+    }
+
+    IEnumerator GameOver() {
+        ps.Stop();
+        lvlMgr.isGameOver = true;
+        animator.SetBool("isIdle", true);
+        lvlMgr.gameOverText.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        lvlMgr.returnButton.onClick.Invoke();
+
     }
 
     void setCherryTime() {
