@@ -22,7 +22,8 @@ public class PacStudentController : MonoBehaviour {
     private bool canDown = false;
     private Vector3 impactPos;
     public int score;
-    [SerializeField] ParticleSystem ps;
+    [SerializeField] private ParticleSystem ps;
+    [SerializeField] private ParticleSystem wallps;
 
     void Start() {
         audioSource = GetComponent<AudioSource>();
@@ -252,6 +253,9 @@ public class PacStudentController : MonoBehaviour {
         // Debug.Log(other.gameObject.name);
         string otherName = other.gameObject.name.ToLower();
         if (otherName.Contains("wall")) {
+            Vector3 collisionPoint = other.contacts[0].point;
+            wallps.transform.position = collisionPoint;
+            wallps.Play();
             Debug.Log("Wall Hit!");
             audioSource.clip = audioClips[2];
             audioSource.loop = false;
