@@ -44,6 +44,10 @@ public class LevelManager : MonoBehaviour {
     public bool PauseGame = true;
     public bool isGameOver = false;
     public Button returnButton;
+    public string highScore;
+    public string bestTime;
+    public string currentScore;
+    public string currentTime;
 
     void Start() {
         
@@ -87,9 +91,7 @@ public class LevelManager : MonoBehaviour {
     }
 
     void Update() {
-        if (isGameOver) {
-
-        }
+        if (isGameOver) { SaveScore(); }
         if (PauseGame) {
             if (!isStartPlaying) {
                 StartCoroutine(nameof(LevelStart));
@@ -105,6 +107,27 @@ public class LevelManager : MonoBehaviour {
         if (hasEaten > 0) { StartCoroutine(nameof(EatenTimer)); }
         checkGhosts();
         selectClip();  
+    }
+
+    void SaveScore() {
+        currentTime = timerTextTMP.text;
+        if (PlayerPrefs.HasKey("HighScore") && PlayerPrefs.HasKey("bestTime")) {
+            highScore = PlayerPrefs.GetString("HighScore");
+            bestTime = PlayerPrefs.GetString("BestTime");
+            string newHighScore = CalculateHigherScore(currentScore, highScore);
+            if (newHighScore == currentScore) { PlayerPrefs.SetString("HighScore", currentScore); PlayerPrefs.SetString("BestTime", currentTime); }
+        } else {
+            PlayerPrefs.SetString("HighScore", currentScore);
+            PlayerPrefs.SetString("BestTime", currentTime);
+        }
+    }
+
+    string CalculateHigherScore(string current, string saved) {
+        int currentInt = int.Parse(current);
+        int savedInt = int.Parse(saved);
+        if (currentInt > savedInt) { return current; }
+        else { return saved; }
+        
     }
 
     void checkGhosts() {

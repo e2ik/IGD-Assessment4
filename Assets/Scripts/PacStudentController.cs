@@ -405,6 +405,7 @@ public class PacStudentController : MonoBehaviour {
     }
 
     IEnumerator GameOver() {
+        lvlMgr.currentScore = score.ToString();
         ps.Stop();
         lvlMgr.isGameOver = true;
         animator.SetBool("isIdle", true);

@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour {
 
     private Button returnButton;
     public AudioSource openMusic;
-    private int sceneSelect;
     private int startSceneIndex = 0;
     private int levelOneIndex = 1;
     private int levelTwoIndex = 2;
-    [SerializeField] private GameObject levelOneObject;
-    [SerializeField] private GameObject levelTwoObject;
     private bool isPlaying = false;
     public Text timerText;
+    public TextMeshProUGUI highScoreTMP;
+    public TextMeshProUGUI bestTimeTMP;
+
 
     void Start() {
-        levelOneObject = GameObject.FindGameObjectWithTag("Level1");
-        levelTwoObject = GameObject.FindGameObjectWithTag("Level2");
         openMusic.Play();
         isPlaying = true;
+        if (PlayerPrefs.HasKey("HighScore") && PlayerPrefs.HasKey("BestTime")) {
+            highScoreTMP.text = PlayerPrefs.GetString("HighScore");
+            bestTimeTMP.text = PlayerPrefs.GetString("BestTime");
+        }   
     }
 
     public void LoadFirstLevel() {

@@ -662,8 +662,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openMusic: {fileID: 132534563}
-  levelOneObject: {fileID: 0}
-  levelTwoObject: {fileID: 0}
+  timerText: {fileID: 0}
+  highScoreTMP: {fileID: 36266043}
+  bestTimeTMP: {fileID: 10952884}
 --- !u!4 &132534562
 Transform:
   m_ObjectHideFlags: 0
