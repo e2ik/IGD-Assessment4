@@ -26,6 +26,7 @@ public class PacStudentController : MonoBehaviour {
     [SerializeField] private ParticleSystem wallps;
     [SerializeField] private GameObject leftPort;
     [SerializeField] private GameObject rightPort;
+    [SerializeField] private LevelManager lvlMgr;
 
     void Start() {
         audioSource = GetComponent<AudioSource>();
@@ -280,9 +281,11 @@ public class PacStudentController : MonoBehaviour {
         if (otherName.Contains("power")) {
             Destroy(other.gameObject);
             score += LevelManager.powerpellet;
+            lvlMgr.numOfPellets--;
         } else if (otherName.Contains("pellet")){
             Destroy (other.gameObject);
             score += LevelManager.pellet;
+            lvlMgr.numOfPellets--;
         }
 
         if (otherName.Contains("cherry")) {

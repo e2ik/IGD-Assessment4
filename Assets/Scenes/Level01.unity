@@ -5145,6 +5145,10 @@ MonoBehaviour:
   timerTextTMP: {fileID: 0}
   scoreTextTMP: {fileID: 0}
   psc: {fileID: 1948569672}
+  edibleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  numOfPellets: 0
 --- !u!1001 &210566678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54597,6 +54601,7 @@ MonoBehaviour:
   wallps: {fileID: 930309381}
   leftPort: {fileID: 1788187758}
   rightPort: {fileID: 1063146634}
+  lvlMgr: {fileID: 210036606}
 --- !u!50 &1948569673
 Rigidbody2D:
   serializedVersion: 4

@@ -16,8 +16,15 @@ public class LevelManager : MonoBehaviour {
     public static readonly int powerpellet = 50;
     public static readonly int cherry = 100;
     public PacStudentController psc;
+    public LayerMask edibleLayer;
+    public int numOfPellets = 0;
 
     void Start() {
+    
+        GameObject[] allGameObjects = GameObject.FindObjectsOfType<GameObject>();
+        foreach (GameObject go in allGameObjects) {
+            if (go.name.ToLower().Contains("pellet")) { numOfPellets++; }
+        }
         startTime = Time.time;
         GameObject timer = GameObject.FindWithTag("GameTimer");
         if ( timer != null ) { timerTextTMP = timer.GetComponent<TextMeshProUGUI>(); }
@@ -26,7 +33,6 @@ public class LevelManager : MonoBehaviour {
     }
 
     void Update() {
-
         setTime();
         setScore();
         
