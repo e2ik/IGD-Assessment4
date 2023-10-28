@@ -12,6 +12,7 @@ TagManager:
   - GhostTimer
   - Zombie
   - Cherry
+  - LevelStart
   layers:
   - Default
   - TransparentFX

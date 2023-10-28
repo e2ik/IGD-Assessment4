@@ -7,6 +7,7 @@ using System;
 
 public class LevelManager : MonoBehaviour {
 
+    public int livesCount;
     public string timerText;
     public int timerSecond;
     public int timerMinute;
@@ -17,6 +18,7 @@ public class LevelManager : MonoBehaviour {
     public TextMeshProUGUI timerTextTMP;
     public TextMeshProUGUI scoreTextTMP;
     public TextMeshProUGUI ghostTimerTMP;
+    public TextMeshProUGUI levelStartTMP;
     public static readonly int pellet = 10;
     public static readonly int powerpellet = 50;
     public static readonly int cherry = 100;
@@ -37,6 +39,8 @@ public class LevelManager : MonoBehaviour {
     private bool isNormalPlaying = false;
     private bool isScaredPlaying = false;
     private bool isDeadPlaying = false;
+    private bool isStartPlaying = false;
+    public bool PauseGame = true;
 
     void Start() {
         
@@ -52,15 +56,49 @@ public class LevelManager : MonoBehaviour {
         if (scoreObj != null) { scoreTextTMP = scoreObj.GetComponent<TextMeshProUGUI>(); }
         GameObject ghostTimerObj = GameObject.FindWithTag("GhostTimer");
         if (ghostTimerObj != null) { ghostTimerTMP = ghostTimerObj.GetComponent<TextMeshProUGUI>(); }
+        GameObject levelStartObj = GameObject.FindWithTag("LevelStart");
+        if (levelStartObj != null) { levelStartTMP = levelStartObj.GetComponent<TextMeshProUGUI>(); }
+    }
+
+    IEnumerator LevelStart() {
+        ghostTimerPanel.SetActive(false);
+        audioSource.clip = audioClips[3];
+        audioSource.loop = false;
+        if (!audioSource.isPlaying) {
+            audioSource.Play();
+        }
+        levelStartTMP.text = "3";
+        yield return new WaitForSeconds(1f);
+        levelStartTMP.text = "2";
+        yield return new WaitForSeconds(1f);
+        levelStartTMP.text = "1";
+        yield return new WaitForSeconds(1f);
+        levelStartTMP.text = "GO";
+        GameObject lifeIconThree = GameObject.Find("LifeThree");
+        Destroy(lifeIconThree);
+        livesCount--;
+        yield return new WaitForSeconds(1f);
+        PauseGame = false;
+        GameObject levelStartObj = GameObject.FindWithTag("LevelStart");
+        if (levelStartObj != null) { levelStartObj.SetActive(false); }
     }
 
     void Update() {
+        if (PauseGame) {
+            if (!isStartPlaying) {
+                StartCoroutine(nameof(LevelStart));
+                isStartPlaying = true;
+            }
+        } else if (!PauseGame) { RunGame(); }
+    }
+
+    void RunGame() {
         setTime();
         setScore();
         if (powerPelletEaten) { ghostTimerPanel.SetActive(true); StartScared(); } else {ghostTimerPanel.SetActive(false);}
         if (hasEaten > 0) { StartCoroutine(nameof(EatenTimer)); }
         checkGhosts();
-        selectClip();        
+        selectClip();  
     }
 
     void checkGhosts() {
@@ -73,6 +111,20 @@ public class LevelManager : MonoBehaviour {
     }
 
     void selectClip() {
+        if (PauseGame) {
+            audioSource.clip = audioClips[3];
+            audioSource.loop = false;
+            if (!audioSource.isPlaying) {
+                audioSource.Play();
+            }
+            if (audioSource.isPlaying && (isNormalPlaying || isScaredPlaying || isDeadPlaying)) { audioSource.Stop(); }
+            isNormalPlaying = false;
+            isScaredPlaying = false;
+            isDeadPlaying = false;
+
+            return;
+        }
+
         if (hasEaten > 0) {
             if (!isDeadPlaying) {
                 audioSource.clip = audioClips[2];

@@ -43,17 +43,14 @@ public class PacStudentController : MonoBehaviour {
     }
 
     void Update() {
+        if (lvlMgr.PauseGame == false) { UpdateGame(); }
+    }
+
+    void UpdateGame() {
 
         if (currentInput.Contains("Impact")) {
             ps.Stop();
         }
-
-        // if (currentInput == "LeftTeleporter") {
-        //     GameObject leftPort = GameObject.Find("LeftTeleporter");
-        //     GameObject rightPort = GameObject.Find("RightTeleporter");
-        //     transform.position = rightPort.transform.position;
-        //     Invoke(nameof(setInput), 0.5f);
-        // }
 
         if (CheckCollision(Vector2.up)) { canUp = false; } else { canUp = true; }
         if (CheckCollision(Vector2.down)) { canDown = false; } else { canDown = true; }
@@ -306,10 +303,53 @@ public class PacStudentController : MonoBehaviour {
                     lvlMgr.RedGhost.currentState = GhostStates.State.eaten;
                     lvlMgr.hasEaten++;
                     score += LevelManager.ghost;
+                } else if (lvlMgr.RedGhost.currentState == GhostStates.State.normal) {
+                    lvlMgr.PauseGame = true;
+                    currentInput = "Idle";
+                    lastInput = "Idle";
+                    tweener.KillAllTweens();
+                    StartCoroutine(nameof(respawn));
+                }
+            }
+
+            if (otherName.Contains("blue")) {
+                if (lvlMgr.BlueGhost.currentState == GhostStates.State.scared || lvlMgr.BlueGhost.currentState == GhostStates.State.recover) {
+                    lvlMgr.BlueGhost.currentState = GhostStates.State.eaten;
+                    lvlMgr.hasEaten++;
+                    score += LevelManager.ghost;
+                }
+            }
+
+            if (otherName.Contains("pink")) {
+                if (lvlMgr.PinkGhost.currentState == GhostStates.State.scared || lvlMgr.PinkGhost.currentState == GhostStates.State.recover) {
+                    lvlMgr.PinkGhost.currentState = GhostStates.State.eaten;
+                    lvlMgr.hasEaten++;
+                    score += LevelManager.ghost;
+                }
+            }
+
+            if (otherName.Contains("orange")) {
+                if (lvlMgr.OrangeGhost.currentState == GhostStates.State.scared || lvlMgr.OrangeGhost.currentState == GhostStates.State.recover) {
+                    lvlMgr.OrangeGhost.currentState = GhostStates.State.eaten;
+                    lvlMgr.hasEaten++;
+                    score += LevelManager.ghost;
                 }
             }
 
         }
+    }
+
+    IEnumerator respawn() {
+        transform.Translate(-11.5f, 10f, 0f);
+        Vector3 currentPosition = transform.position;
+        float roundedX = Mathf.Round(currentPosition.x);
+        float roundedY = Mathf.Round(currentPosition.y);
+        Vector3 roundedPosition = new Vector3(roundedX, roundedY, currentPosition.z);
+        transform.position = roundedPosition;
+        startPosition = transform.position;
+        yield return new WaitForSeconds(1f);
+        lvlMgr.PauseGame = false;
+        tweener.KillAllTweens();        
     }
 
     void setCherryTime() {

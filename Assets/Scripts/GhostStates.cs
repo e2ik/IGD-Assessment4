@@ -7,6 +7,7 @@ public class GhostStates : MonoBehaviour {
     [SerializeField] private Animator animator;
     public enum State { normal, scared, recover, eaten }
     public State currentState;
+    [SerializeField] private LevelManager lvlMgr;
 
     void Start() {
         animator = GetComponent<Animator>();
@@ -15,6 +16,10 @@ public class GhostStates : MonoBehaviour {
     }
 
     void Update() {
+        if (lvlMgr.PauseGame == false) { UpdateGame(); }
+    }
+
+    void UpdateGame() {
         ScaredState();
         NormalState();
         RecoverState();
