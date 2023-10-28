@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class LevelManager : MonoBehaviour {
 
@@ -43,6 +42,7 @@ public class LevelManager : MonoBehaviour {
     private bool isStartPlaying = false;
     public bool PauseGame = true;
     public bool isGameOver = false;
+    public bool isRespawning = false;
     public Button returnButton;
     public string highScore;
     public string bestTime;
@@ -92,6 +92,7 @@ public class LevelManager : MonoBehaviour {
     }
 
     void Update() {
+        if (isRespawning) { setTime(); }
         if (isGameOver) { SaveScore(); }
         if (PauseGame) {
             if (!isStartPlaying) {

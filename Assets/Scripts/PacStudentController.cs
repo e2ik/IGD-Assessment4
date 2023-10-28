@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PacStudentController : MonoBehaviour {
 
@@ -313,6 +310,7 @@ public class PacStudentController : MonoBehaviour {
                     lvlMgr.hasEaten++;
                     score += LevelManager.ghost;
                 } else if (lvlMgr.RedGhost.currentState == GhostStates.State.normal) {
+                    lvlMgr.isRespawning = true;
                     ps.Stop();
                     deadSplat.Play();
                     lvlMgr.PauseGame = true;
@@ -329,6 +327,7 @@ public class PacStudentController : MonoBehaviour {
                     lvlMgr.hasEaten++;
                     score += LevelManager.ghost;
                 } else if (lvlMgr.BlueGhost.currentState == GhostStates.State.normal) {
+                    lvlMgr.isRespawning = true;
                     ps.Stop();
                     deadSplat.Play();
                     lvlMgr.PauseGame = true;
@@ -345,6 +344,7 @@ public class PacStudentController : MonoBehaviour {
                     lvlMgr.hasEaten++;
                     score += LevelManager.ghost;
                 } else if (lvlMgr.PinkGhost.currentState == GhostStates.State.normal) {
+                    lvlMgr.isRespawning = true;
                     ps.Stop();
                     deadSplat.Play();
                     lvlMgr.PauseGame = true;
@@ -361,6 +361,7 @@ public class PacStudentController : MonoBehaviour {
                     lvlMgr.hasEaten++;
                     score += LevelManager.ghost;
                 } else if (lvlMgr.OrangeGhost.currentState == GhostStates.State.normal) {
+                    lvlMgr.isRespawning = true;
                     ps.Stop();
                     deadSplat.Play();
                     lvlMgr.PauseGame = true;
@@ -392,6 +393,7 @@ public class PacStudentController : MonoBehaviour {
         if (lvlMgr.livesCount == -1) {
             StartCoroutine(nameof(GameOver));
             lvlMgr.PauseGame = true;
+            lvlMgr.isRespawning = false;
             yield break;
         }
         animator.SetBool("isDead", false);
@@ -406,7 +408,8 @@ public class PacStudentController : MonoBehaviour {
         startPosition = transform.position;
         yield return new WaitForSeconds(1f);
         lvlMgr.PauseGame = false;
-        tweener.KillAllTweens();        
+        tweener.KillAllTweens();
+        lvlMgr.isRespawning = false;   
     }
 
     IEnumerator GameOver() {

@@ -5318,6 +5318,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 65eb0c18424360f42a77c044d6b99d52, type: 3}
   PauseGame: 1
   isGameOver: 0
+  isRespawning: 0
   returnButton: {fileID: 943191855}
   highScore: 
   bestTime: 
@@ -7697,6 +7698,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6117212576071012733, guid: daf99255867776645815d237efd04892, type: 3}
       insertIndex: -1
       addedObject: {fileID: 787122836}
+    - targetCorrespondingSourceObject: {fileID: 6117212576071012733, guid: daf99255867776645815d237efd04892, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 787122840}
+    - targetCorrespondingSourceObject: {fileID: 6117212576071012733, guid: daf99255867776645815d237efd04892, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 787122841}
   m_SourcePrefab: {fileID: 100100000, guid: daf99255867776645815d237efd04892, type: 3}
 --- !u!1001 &290895788
 PrefabInstance:
@@ -19269,6 +19276,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   currentState: 0
+  lvlMgr: {fileID: 210036606}
+--- !u!114 &787122840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787122832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d1b35da9902f7941ab9bf347eb50dcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 4
+  isMoving: 0
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  edibleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  currentInput: 
+  lastInput: 
+  lvlMgr: {fileID: 210036606}
+--- !u!114 &787122841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787122832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d1b35da9902f7941ab9bf347eb50dcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  isMoving: 0
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  edibleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  currentInput: 
+  lastInput: 
   lvlMgr: {fileID: 210036606}
 --- !u!1001 &787766651
 PrefabInstance:
