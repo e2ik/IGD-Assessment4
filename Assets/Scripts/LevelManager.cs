@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class LevelManager : MonoBehaviour {
 
@@ -30,9 +31,16 @@ public class LevelManager : MonoBehaviour {
     [SerializeField] private GhostStates[] allGhosts;
     public bool powerPelletEaten = false;
     public int hasEaten = 0;
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip[] audioClips;
+    private bool hasScared = false;
+    private bool isNormalPlaying = false;
+    private bool isScaredPlaying = false;
+    private bool isDeadPlaying = false;
 
     void Start() {
         
+        audioSource = GetComponent<AudioSource>();
         GameObject[] allGameObjects = GameObject.FindObjectsOfType<GameObject>();
         foreach (GameObject go in allGameObjects) {
             if (go.name.ToLower().Contains("pellet")) { numOfPellets++; }
@@ -51,7 +59,51 @@ public class LevelManager : MonoBehaviour {
         setScore();
         if (powerPelletEaten) { ghostTimerPanel.SetActive(true); StartScared(); } else {ghostTimerPanel.SetActive(false);}
         if (hasEaten > 0) { StartCoroutine(nameof(EatenTimer)); }
-        
+        checkGhosts();
+        selectClip();        
+    }
+
+    void checkGhosts() {
+        foreach (GhostStates gs in allGhosts) {
+            if (gs.currentState == GhostStates.State.scared || gs.currentState == GhostStates.State.recover ) {
+                hasScared = true;
+                break;
+            } else { hasScared = false; }
+        }
+    }
+
+    void selectClip() {
+        if (hasEaten > 0) {
+            if (!isDeadPlaying) {
+                audioSource.clip = audioClips[2];
+                audioSource.loop = true;
+                audioSource.Play();
+
+                isNormalPlaying = false;
+                isScaredPlaying = false;
+                isDeadPlaying = true;
+            }
+        } else if (hasScared) {
+            if (!isScaredPlaying) {
+                audioSource.clip = audioClips[1];
+                audioSource.loop = true;
+                audioSource.Play();
+
+                isNormalPlaying = false;
+                isScaredPlaying = true;
+                isDeadPlaying = false;
+            }
+        } else {
+            if (!isNormalPlaying) {
+                audioSource.clip = audioClips[0];
+                audioSource.loop = true;
+                audioSource.Play();
+
+                isNormalPlaying = true;
+                isScaredPlaying = false;
+                isDeadPlaying = false;
+            }
+        }
     }
 
     IEnumerator EatenTimer() {
