@@ -7,7 +7,7 @@ public class GhostsController : MonoBehaviour {
     private Tweener tweener;
     private Vector3 startPosition;
     private Vector3 endPosition;
-    [SerializeField] private float moveSpeed = 4.0f;
+    [SerializeField] private float moveSpeed = 3.5f;
     [SerializeField] private bool isMoving = false;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask edibleLayer;

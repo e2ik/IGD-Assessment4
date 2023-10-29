@@ -12,7 +12,7 @@ public class GhostStates : MonoBehaviour {
     void Start() {
         animator = GetComponent<Animator>();
         currentState = State.normal;
-        animator.SetBool("movingLeft", true);
+        // animator.SetBool("movingLeft", true);
     }
 
     void Update() {
