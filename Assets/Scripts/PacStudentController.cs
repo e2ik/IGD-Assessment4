@@ -301,8 +301,7 @@ public class PacStudentController : MonoBehaviour {
         }
 
         if (otherName.Contains("hunter")) {
-            Debug.Log(otherName);
-
+   
             if (otherName.Contains("red")) {
                 if (lvlMgr.RedGhost.currentState == GhostStates.State.scared || lvlMgr.RedGhost.currentState == GhostStates.State.recover) {
                     lvlMgr.RedGhost.currentState = GhostStates.State.eaten;
@@ -430,14 +429,14 @@ public class PacStudentController : MonoBehaviour {
         Vector2 startPos = transform.position;
         float rayDistance = 0.6f;
         RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, wallLayer);
-        Debug.DrawRay(startPos, direction * rayDistance, Color.red);
+        // Debug.DrawRay(startPos, direction * rayDistance, Color.red);
 
         if (hit.collider != null) { return true; }
         return false;
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log(other.gameObject.name);
+        // Debug.Log(other.gameObject.name);
         if (other.gameObject.name == "LeftTeleporterSet") {
             if (currentInput == "Left") { currentInput = "Up"; }
         } else if (other.gameObject.name ==  "RightTeleporterSet") {
@@ -487,7 +486,7 @@ public class PacStudentController : MonoBehaviour {
         Vector2 startPos = transform.position;
         float rayDistance = 0.6f;
         RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, edibleLayer);
-        Debug.DrawRay(startPos, direction * rayDistance, Color.blue);
+        // Debug.DrawRay(startPos, direction * rayDistance, Color.blue);
 
         if (hit.collider != null)
         {

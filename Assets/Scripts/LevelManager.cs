@@ -210,8 +210,10 @@ public class LevelManager : MonoBehaviour {
         GhostsController gc = ghost.GetComponent<GhostsController>();
         if (gc.isHome) {
             yield return new WaitForSeconds(1.5f);
-            ghost.currentState = GhostStates.State.normal;
-            hasEaten--;
+            if (ghost.currentState == GhostStates.State.eaten) {
+                ghost.currentState = GhostStates.State.normal;
+                hasEaten--;
+            }
             yield break;
         }
         yield return new WaitForSeconds(deadtime);
