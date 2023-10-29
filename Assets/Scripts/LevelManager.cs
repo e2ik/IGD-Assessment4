@@ -126,11 +126,14 @@ public class LevelManager : MonoBehaviour {
 
     void SaveScore() {
         currentTime = timerTextTMP.text;
-        if (PlayerPrefs.HasKey("HighScore") && PlayerPrefs.HasKey("bestTime")) {
+        if (PlayerPrefs.HasKey("HighScore") && PlayerPrefs.HasKey("BestTime")) {
             highScore = PlayerPrefs.GetString("HighScore");
             bestTime = PlayerPrefs.GetString("BestTime");
             string newHighScore = CalculateHigherScore(currentScore, highScore);
-            if (newHighScore == currentScore) { PlayerPrefs.SetString("HighScore", currentScore); PlayerPrefs.SetString("BestTime", currentTime); }
+            if (newHighScore == currentScore) {
+                PlayerPrefs.SetString("HighScore", currentScore);
+                PlayerPrefs.SetString("BestTime", currentTime);
+            }
         } else {
             PlayerPrefs.SetString("HighScore", currentScore);
             PlayerPrefs.SetString("BestTime", currentTime);
@@ -140,9 +143,11 @@ public class LevelManager : MonoBehaviour {
     string CalculateHigherScore(string current, string saved) {
         int currentInt = int.Parse(current);
         int savedInt = int.Parse(saved);
-        if (currentInt > savedInt) { return current; }
-        else { return saved; }
-        
+        if (currentInt > savedInt) {
+            return current;
+        } else {
+            return saved;
+        }
     }
 
     void checkGhosts() {
