@@ -38,16 +38,16 @@ public class GhostsController : MonoBehaviour {
     }
 
     void UpdateGame() {
-
+        Debug.Log("Current Mode: " + currentMode);
         switch (currentMode) {
             case Mode.runAway:
                 RunAway(); break;
             case Mode.chase:
-                break;
+                Chase(); break;
             case Mode.roundTheWorld:
                 break;
             case Mode.random:
-                break;
+                MoveRandom(); break;
         }
 
         if (currentInput == "Idle") {
@@ -165,68 +165,74 @@ public class GhostsController : MonoBehaviour {
     void Chase() {
         GetTarget();
         Vector3 direction = (targetPos - transform.position).normalized;
+        bool moved = false;
 
         if (transform.position == targetPos) {
             MoveRandom();
+            moved = true;
         }
 
-        if (direction.x > 0 && lastInput != "Left") {  // Moving towards Right
+        if (!moved && direction.x > 0 && lastInput != "Left") {  // Moving towards Right
             if (canRight) {
                 currentInput = "Right";
+                moved = true;
             } else if (direction.y > 0 && lastInput != "Down") {
                 if (canUp) {
                     currentInput = "Up";
+                    moved = true;
                 } else if (canDown && lastInput != "Up") {
                     currentInput = "Down";
-                }
-            } else {
-                if (canLeft && lastInput != "Right") {
-                    currentInput = "Left";
-                }
-            }
-        } else if (direction.x < 0 && lastInput != "Right") { // Moving towards Left
-            if (canLeft) {
-                currentInput = "Left";
-            } else if (direction.y > 0 && lastInput != "Down") {
-                if (canUp) {
-                    currentInput = "Up";
-                } else if (canDown && lastInput != "Up") {
-                    currentInput = "Down";
-                }
-            } else {
-                if (canRight && lastInput != "Left") {
-                    currentInput = "Right";
-                }
-            }
-        } else if (direction.y > 0 && lastInput != "Down") { // Moving towards Up
-            if (canUp) {
-                currentInput = "Up";
-            } else if (direction.x > 0 && lastInput != "Left") {
-                if (canRight) {
-                    currentInput = "Right";
-                } else if (canLeft && lastInput != "Right") {
-                    currentInput = "Left";
-                }
-            } else {
-                if (canDown && lastInput != "Up") {
-                    currentInput = "Down";
-                }
-            }
-        } else if (direction.y < 0 && lastInput != "Up") { // Moving towards Down
-            if (canDown) {
-                currentInput = "Down";
-            } else if (direction.x > 0 && lastInput != "Left") {
-                if (canRight) {
-                    currentInput = "Right";
-                } else if (canLeft && lastInput != "Right") {
-                    currentInput = "Left";
-                }
-            } else {
-                if (canUp && lastInput != "Down") {
-                    currentInput = "Up";
+                    moved = true;
                 }
             }
         }
+
+        if (!moved && direction.x < 0 && lastInput != "Right") { // Moving towards Left
+            if (canLeft) {
+                currentInput = "Left";
+                moved = true;
+            } else if (direction.y > 0 && lastInput != "Down") {
+                if (canUp) {
+                    currentInput = "Up";
+                    moved = true;
+                } else if (canDown && lastInput != "Up") {
+                    currentInput = "Down";
+                    moved = true;
+                }
+            }
+        }
+
+        if (!moved && direction.y > 0 && lastInput != "Down") { // Moving towards Up
+            if (canUp) {
+                currentInput = "Up";
+                moved = true;
+            } else if (direction.x > 0 && lastInput != "Left") {
+                if (canRight) {
+                    currentInput = "Right";
+                    moved = true;
+                } else if (canLeft && lastInput != "Right") {
+                    currentInput = "Left";
+                    moved = true;
+                }
+            }
+        }
+
+        if (!moved && direction.y < 0 && lastInput != "Up") { // Moving towards Down
+            if (canDown) {
+                currentInput = "Down";
+                moved = true;
+            } else if (direction.x > 0 && lastInput != "Left") {
+                if (canRight) {
+                    currentInput = "Right";
+                    moved = true;
+                } else if (canLeft && lastInput != "Right") {
+                    currentInput = "Left";
+                    moved = true;
+                }
+            }
+        }
+
+        if (!moved) { MoveRandom(); }
     }
 
     void RunAway() {
@@ -237,7 +243,7 @@ public class GhostsController : MonoBehaviour {
             MoveRandom();
         }
         
-        bool moved = false;  // Flag to track whether the ghost has moved in any direction
+        bool moved = false;
 
         if (direction.x > 0 && lastInput != "Right") {  // Moving towards Right
             if (canLeft) {
