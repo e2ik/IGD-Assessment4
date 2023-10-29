@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GhostsController : MonoBehaviour {
@@ -32,7 +31,7 @@ public class GhostsController : MonoBehaviour {
     [SerializeField] Vector3 targetPos;
     private int roundCounter = 0;
     private Vector3 homePosition;
-    private bool isHome = false;
+    [SerializeField] private bool isHome = false;
 
     void Start() {
         moveSpeed = fastSpeed;
@@ -184,21 +183,7 @@ public class GhostsController : MonoBehaviour {
         if (other.gameObject.name.Contains("ghostHome")) {
             isHome = true;
             ghostWallLayer &= ~LayerMask.GetMask("GhostWall");
-
-            // GhostStates.State currentState = states.currentState;
-            // if (currentState == GhostStates.State.eaten) {
-            //     StartCoroutine(nameof(returnToNormal));
-            // }
         }
-    }
-
-    IEnumerator returnToNormal() {
-        yield return new WaitForSeconds(1f);
-        states.currentState = GhostStates.State.normal;
-        tweener.KillAllTweens();
-        if (transform.position != homePosition) { transform.position = homePosition; }
-        startPosition = transform.position;
-        transform.Translate(Vector3.zero);
     }
 
     void OnTriggerExit2D(Collider2D other) {
@@ -396,7 +381,8 @@ public class GhostsController : MonoBehaviour {
     }
 
     void GetTarget() {
-        if (currentMode == Mode.runAway || currentMode == Mode.chase) {
+        if (currentMode != Mode.home && isHome) { targetPos = new Vector3(-2f,-1f,0f);
+        } else if (currentMode == Mode.runAway || currentMode == Mode.chase) {
             GameObject targetObj = GameObject.Find("Zombie");
             targetPos = targetObj.transform.position;
         } else if (currentMode == Mode.roundTheWorld) {
