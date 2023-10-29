@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GhostsController : MonoBehaviour {
@@ -12,14 +13,17 @@ public class GhostsController : MonoBehaviour {
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask ghostWallLayer;
     private LayerMask originalGhostWallLayer;
-    [SerializeField] private string currentInput;
-    [SerializeField] private string lastInput;
+    public string currentInput;
+    public string lastInput;
     private bool canRight = false;
     private bool canLeft = false;
     private bool canUp = false;
     private bool canDown = false;
     private Vector3 impactPos;
     [SerializeField] private LevelManager lvlMgr;
+    public enum Mode { runAway, chase, roundTheWorld, random }
+    public Mode currentMode;
+    [SerializeField] Vector3 targetPos;
 
     void Start() {
         originalGhostWallLayer = ghostWallLayer;
@@ -34,6 +38,17 @@ public class GhostsController : MonoBehaviour {
     }
 
     void UpdateGame() {
+
+        switch (currentMode) {
+            case Mode.runAway:
+                RunAway(); break;
+            case Mode.chase:
+                break;
+            case Mode.roundTheWorld:
+                break;
+            case Mode.random:
+                break;
+        }
 
         if (currentInput == "Idle") {
             animator.SetBool("isIdle", true);
@@ -55,23 +70,6 @@ public class GhostsController : MonoBehaviour {
         if (lastInput == "Down" && canDown) { MoveDown(); }
         if (lastInput == "Up" && canUp) { MoveUp(); }
 
-        if (Input.GetKeyDown(KeyCode.W)) {
-            currentInput = "Up";
-            MoveUp();
-        }
-        if (Input.GetKeyDown(KeyCode.S)) {  
-            currentInput = "Down";
-            MoveDown();
-            
-        }
-        if (Input.GetKeyDown(KeyCode.A)) {
-            currentInput = "Left";
-            MoveLeft();
-        }
-        if (Input.GetKeyDown(KeyCode.D)) {
-            currentInput = "Right";
-            MoveRight();
-        }
     }
 
     public void TurnOffAnimParameters() {
@@ -161,6 +159,177 @@ public class GhostsController : MonoBehaviour {
     void OnTriggerExit2D(Collider2D other) {
         if (other.gameObject.name.Contains("ghostHome")) {
             ghostWallLayer = originalGhostWallLayer;
+        }
+    }
+
+    void Chase() {
+        GetTarget();
+        Vector3 direction = (targetPos - transform.position).normalized;
+
+        if (transform.position == targetPos) {
+            MoveRandom();
+        }
+
+        if (direction.x > 0 && lastInput != "Left") {  // Moving towards Right
+            if (canRight) {
+                currentInput = "Right";
+            } else if (direction.y > 0 && lastInput != "Down") {
+                if (canUp) {
+                    currentInput = "Up";
+                } else if (canDown && lastInput != "Up") {
+                    currentInput = "Down";
+                }
+            } else {
+                if (canLeft && lastInput != "Right") {
+                    currentInput = "Left";
+                }
+            }
+        } else if (direction.x < 0 && lastInput != "Right") { // Moving towards Left
+            if (canLeft) {
+                currentInput = "Left";
+            } else if (direction.y > 0 && lastInput != "Down") {
+                if (canUp) {
+                    currentInput = "Up";
+                } else if (canDown && lastInput != "Up") {
+                    currentInput = "Down";
+                }
+            } else {
+                if (canRight && lastInput != "Left") {
+                    currentInput = "Right";
+                }
+            }
+        } else if (direction.y > 0 && lastInput != "Down") { // Moving towards Up
+            if (canUp) {
+                currentInput = "Up";
+            } else if (direction.x > 0 && lastInput != "Left") {
+                if (canRight) {
+                    currentInput = "Right";
+                } else if (canLeft && lastInput != "Right") {
+                    currentInput = "Left";
+                }
+            } else {
+                if (canDown && lastInput != "Up") {
+                    currentInput = "Down";
+                }
+            }
+        } else if (direction.y < 0 && lastInput != "Up") { // Moving towards Down
+            if (canDown) {
+                currentInput = "Down";
+            } else if (direction.x > 0 && lastInput != "Left") {
+                if (canRight) {
+                    currentInput = "Right";
+                } else if (canLeft && lastInput != "Right") {
+                    currentInput = "Left";
+                }
+            } else {
+                if (canUp && lastInput != "Down") {
+                    currentInput = "Up";
+                }
+            }
+        }
+    }
+
+    void RunAway() {
+        GetTarget();
+        Vector3 direction = (targetPos - transform.position).normalized;
+
+        if (transform.position == targetPos) {
+            MoveRandom();
+        }
+        
+        bool moved = false;  // Flag to track whether the ghost has moved in any direction
+
+        if (direction.x > 0 && lastInput != "Right") {  // Moving towards Right
+            if (canLeft) {
+                currentInput = "Left";
+                moved = true;
+            } else if (direction.y > 0 && lastInput != "Up") {
+                if (canDown) {
+                    currentInput = "Down";
+                    moved = true;
+                } else if (canUp && lastInput != "Down") {
+                    currentInput = "Up";
+                    moved = true;
+                }
+            }
+        }
+
+        if (!moved && direction.x < 0 && lastInput != "Left") { // Moving towards Left
+            if (canRight) {
+                currentInput = "Right";
+                moved = true;
+            } else if (direction.y > 0 && lastInput != "Up") {
+                if (canDown) {
+                    currentInput = "Down";
+                    moved = true;
+                } else if (canUp && lastInput != "Down") {
+                    currentInput = "Up";
+                    moved = true;
+                }
+            }
+        }
+
+        if (!moved && direction.y > 0 && lastInput != "Up") { // Moving towards Up
+            if (canDown) {
+                currentInput = "Down";
+                moved = true;
+            } else if (direction.x > 0 && lastInput != "Right") {
+                if (canLeft) {
+                    currentInput = "Left";
+                    moved = true;
+                } else if (canRight && lastInput != "Left") {
+                    currentInput = "Right";
+                    moved = true;
+                }
+            }
+        }
+
+        if (!moved && direction.y < 0 && lastInput != "Down") { // Moving towards Down
+            if (canUp) {
+                currentInput = "Up";
+                moved = true;
+            } else if (direction.x > 0 && lastInput != "Right") {
+                if (canLeft) {
+                    currentInput = "Left";
+                    moved = true;
+                } else if (canRight && lastInput != "Left") {
+                    currentInput = "Right";
+                    moved = true;
+                }
+            }
+        }
+
+        if (!moved) { MoveRandom(); }
+    }
+
+    void MoveRandom() {
+
+        List<string> availableDirections = new List<string>();
+
+        if (lastInput != "Right" && canLeft) {
+            availableDirections.Add("Left");
+        }
+        if (lastInput != "Left" && canRight) {
+            availableDirections.Add("Right");
+        }
+        if (lastInput != "Up" && canDown) {
+            availableDirections.Add("Down");
+        }
+        if (lastInput != "Down" && canUp) {
+            availableDirections.Add("Up");
+        }
+
+        if (availableDirections.Count > 0) {
+            int randomIndex = Random.Range(0, availableDirections.Count);
+            currentInput = availableDirections[randomIndex];
+        }
+
+    }
+
+    void GetTarget() {
+        if (currentMode == Mode.runAway) {
+            GameObject targetObj = GameObject.Find("Zombie");
+            targetPos = targetObj.transform.position;
         }
     }
 
