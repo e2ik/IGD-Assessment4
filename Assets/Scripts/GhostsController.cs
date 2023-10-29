@@ -24,6 +24,7 @@ public class GhostsController : MonoBehaviour {
     public enum Mode { runAway, chase, roundTheWorld, random }
     public Mode currentMode;
     [SerializeField] Vector3 targetPos;
+    private int roundCounter = 0;
 
     void Start() {
         originalGhostWallLayer = ghostWallLayer;
@@ -38,14 +39,14 @@ public class GhostsController : MonoBehaviour {
     }
 
     void UpdateGame() {
-        Debug.Log("Current Mode: " + currentMode);
+
         switch (currentMode) {
             case Mode.runAway:
                 RunAway(); break;
             case Mode.chase:
                 Chase(); break;
             case Mode.roundTheWorld:
-                break;
+                RoundRound(); break;
             case Mode.random:
                 MoveRandom(); break;
         }
@@ -332,10 +333,27 @@ public class GhostsController : MonoBehaviour {
 
     }
 
+    void RoundRound() {
+        Chase();
+        if (roundCounter > 7) { roundCounter = -1; }
+        if (transform.position == targetPos) { roundCounter++; }
+    }
+
     void GetTarget() {
-        if (currentMode == Mode.runAway) {
+        if (currentMode == Mode.runAway || currentMode == Mode.chase) {
             GameObject targetObj = GameObject.Find("Zombie");
             targetPos = targetObj.transform.position;
+        } else if (currentMode == Mode.roundTheWorld) {
+            switch (roundCounter) {
+                case 0: targetPos = new Vector3(11f, -17f, 0f); break;
+                case 1: targetPos = new Vector3(-3f, -17f, 0f); break;
+                case 2: targetPos = new Vector3(-14f, -17f, 0f); break;
+                case 3: targetPos = new Vector3(-14f, 2f, 0f); break;
+                case 4: targetPos = new Vector3(-14f, 9f, 0f); break;
+                case 5: targetPos = new Vector3(0f, 9f, 0f); break;
+                case 6: targetPos = new Vector3(11f, 9f, 0f); break;
+                case 7: targetPos = new Vector3(11f, -10f, 0f); break;
+            }
         }
     }
 
