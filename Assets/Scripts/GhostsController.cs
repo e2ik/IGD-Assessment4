@@ -10,7 +10,7 @@ public class GhostsController : MonoBehaviour {
     [SerializeField] private float moveSpeed = 3.5f;
     [SerializeField] private bool isMoving = false;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private LayerMask edibleLayer;
+    [SerializeField] private LayerMask ghostWallLayer;
     [SerializeField] private string currentInput;
     [SerializeField] private string lastInput;
     private bool canRight = false;
@@ -54,39 +54,30 @@ public class GhostsController : MonoBehaviour {
         if (lastInput == "Up" && canUp) { MoveUp(); }
 
         if (Input.GetKeyDown(KeyCode.W)) {
-            if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
-                currentInput = "Up";
-                MoveUp();
-            }
+            currentInput = "Up";
+            MoveUp();
         }
         if (Input.GetKeyDown(KeyCode.S)) {  
-            if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
-                currentInput = "Down";
-                MoveDown();
-            }
+            currentInput = "Down";
+            MoveDown();
             
         }
-        if (Input.GetKeyDown(KeyCode.A)) {    
-            if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
-                currentInput = "Left";
-                MoveLeft();
-            }
+        if (Input.GetKeyDown(KeyCode.A)) {
+            currentInput = "Left";
+            MoveLeft();
         }
         if (Input.GetKeyDown(KeyCode.D)) {
-            if (!currentInput.Contains("Impact") && currentInput != "BounceBack" || currentInput == "Idle") {
-                currentInput = "Right";
-                MoveRight();
-            }
+            currentInput = "Right";
+            MoveRight();
         }
     }
 
     public void TurnOffAnimParameters() {
         AnimatorControllerParameter[] parameters = animator.parameters;
         foreach (AnimatorControllerParameter parameter in parameters) {
-                if (parameter.type == AnimatorControllerParameterType.Bool)
-                {
-                    animator.SetBool(parameter.name, false);
-                }
+            if (parameter.type == AnimatorControllerParameterType.Bool) {
+                animator.SetBool(parameter.name, false);
+            }
         }
     }
 
@@ -151,14 +142,16 @@ public class GhostsController : MonoBehaviour {
     bool CheckCollision(Vector2 direction) {
         Vector2 startPos = transform.position;
         float rayDistance = 0.6f;
-        RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, wallLayer);
+        LayerMask combinedLayers = wallLayer | ghostWallLayer;
+        RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, combinedLayers);
         Debug.DrawRay(startPos, direction * rayDistance, Color.red);
 
-        if (hit.collider != null)
-        {
-            return true;
-        }
+        if (hit.collider != null) { return true; }
         return false;
+    }
+
+    void OnTriggerStay2D(Collider2D other) {
+        Debug.Log("Inside Something!");
     }
 
 }

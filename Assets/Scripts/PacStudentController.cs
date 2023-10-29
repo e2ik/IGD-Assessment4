@@ -169,10 +169,9 @@ public class PacStudentController : MonoBehaviour {
     public void TurnOffAnimParameters() {
         AnimatorControllerParameter[] parameters = animator.parameters;
         foreach (AnimatorControllerParameter parameter in parameters) {
-                if (parameter.type == AnimatorControllerParameterType.Bool)
-                {
-                    animator.SetBool(parameter.name, false);
-                }
+            if (parameter.type == AnimatorControllerParameterType.Bool) {
+                animator.SetBool(parameter.name, false);
+            }
         }
     }
 
@@ -433,10 +432,7 @@ public class PacStudentController : MonoBehaviour {
         RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, wallLayer);
         Debug.DrawRay(startPos, direction * rayDistance, Color.red);
 
-        if (hit.collider != null)
-        {
-            return true;
-        }
+        if (hit.collider != null) { return true; }
         return false;
     }
 
