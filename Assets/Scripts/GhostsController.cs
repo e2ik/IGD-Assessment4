@@ -31,7 +31,7 @@ public class GhostsController : MonoBehaviour {
     [SerializeField] Vector3 targetPos;
     private int roundCounter = 0;
     private Vector3 homePosition;
-    [SerializeField] private bool isHome = false;
+    public bool isHome = false;
 
     void Start() {
         moveSpeed = fastSpeed;
@@ -62,8 +62,10 @@ public class GhostsController : MonoBehaviour {
 
         if (currentState == GhostStates.State.eaten && !isHome) {
             currentMode = Mode.home;
-            moveSpeed = 10f;
+            moveSpeed = 9f;
             wallLayer &= ~LayerMask.GetMask("Wall");
+        } else if (currentState == GhostStates.State.eaten && isHome) {
+            moveSpeed = 2.0f;
         } else { wallLayer = originalWallLayer; }
 
         switch (currentMode) {

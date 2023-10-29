@@ -49,7 +49,6 @@ public class LevelManager : MonoBehaviour {
     public string currentScore;
     public string currentTime;
     public GhostStates eatenGhost;
-    private List<GhostStates> eatenList = new List<GhostStates>();
 
     void Start() {
         
@@ -208,6 +207,13 @@ public class LevelManager : MonoBehaviour {
     }
 
     IEnumerator EatenTimer(GhostStates ghost) {
+        GhostsController gc = ghost.GetComponent<GhostsController>();
+        if (gc.isHome) {
+            yield return new WaitForSeconds(1.5f);
+            ghost.currentState = GhostStates.State.normal;
+            hasEaten--;
+            yield break;
+        }
         yield return new WaitForSeconds(deadtime);
         if (ghost.currentState == GhostStates.State.eaten) {
             ghost.currentState = GhostStates.State.normal;
