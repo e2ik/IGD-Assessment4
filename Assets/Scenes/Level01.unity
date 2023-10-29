@@ -19675,7 +19675,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1b35da9902f7941ab9bf347eb50dcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3.5
+  slowSpeed: 2
+  fastSpeed: 3.5
   isMoving: 0
   wallLayer:
     serializedVersion: 2
@@ -19686,7 +19687,8 @@ MonoBehaviour:
   currentInput: 
   lastInput: 
   lvlMgr: {fileID: 210036606}
-  currentMode: 1
+  currentMode: 0
+  thisGhostMode: 0
   targetPos: {x: 0, y: 0, z: 0}
 --- !u!114 &787122886
 MonoBehaviour:

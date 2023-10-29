@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GhostsController : MonoBehaviour {
@@ -8,7 +9,9 @@ public class GhostsController : MonoBehaviour {
     private Tweener tweener;
     private Vector3 startPosition;
     private Vector3 endPosition;
-    [SerializeField] private float moveSpeed = 3.5f;
+    [SerializeField] private float slowSpeed = 2.0f;
+    [SerializeField] private float fastSpeed = 3.5f;
+    private float moveSpeed;
     [SerializeField] private bool isMoving = false;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask ghostWallLayer;
@@ -21,17 +24,21 @@ public class GhostsController : MonoBehaviour {
     private bool canDown = false;
     private Vector3 impactPos;
     [SerializeField] private LevelManager lvlMgr;
+    private GhostStates states;
     public enum Mode { runAway, chase, roundTheWorld, random }
     public Mode currentMode;
+    [SerializeField] private Mode thisGhostMode;
     [SerializeField] Vector3 targetPos;
     private int roundCounter = 0;
 
     void Start() {
+        moveSpeed = fastSpeed;
         originalGhostWallLayer = ghostWallLayer;
         tweener = GetComponent<Tweener>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
         currentInput = "Idle";
+        states = GetComponent<GhostStates>();
     }
 
     void Update() {
@@ -39,6 +46,15 @@ public class GhostsController : MonoBehaviour {
     }
 
     void UpdateGame() {
+
+        GhostStates.State currentState = states.currentState;
+        if (currentState == GhostStates.State.scared || currentState == GhostStates.State.recover) {
+            moveSpeed = slowSpeed;
+            currentMode = Mode.runAway;
+        } else if (currentState == GhostStates.State.normal) {
+            currentMode = thisGhostMode;
+            moveSpeed = fastSpeed;
+        }
 
         switch (currentMode) {
             case Mode.runAway:
