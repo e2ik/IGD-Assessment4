@@ -193,11 +193,11 @@ public class GhostsController : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.name.Contains("ghostHome")) {
-            isHome = true;
-        }
-    }
+    // void OnTriggerEnter2D(Collider2D other) {
+    //     if (other.gameObject.name.Contains("ghostHomeBlock")) {
+    //         isHome = true;
+    //     }
+    // }
 
     void Chase() {
         GetTarget();
@@ -366,7 +366,6 @@ public class GhostsController : MonoBehaviour {
             int randomIndex = Random.Range(0, availableDirections.Count);
             currentInput = availableDirections[randomIndex];
         }
-
     }
 
     void RoundRound() {
@@ -396,7 +395,7 @@ public class GhostsController : MonoBehaviour {
                 case 6: targetPos = new Vector3(11f, 9f, 0f); break;
                 case 7: targetPos = new Vector3(11f, -10f, 0f); break;
             }
-        } else if (currentMode == Mode.home) { targetPos = homePosition; }
+        }
     }
 
 }

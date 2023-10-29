@@ -48,6 +48,8 @@ public class LevelManager : MonoBehaviour {
     public string bestTime;
     public string currentScore;
     public string currentTime;
+    public GhostStates eatenGhost;
+    private List<GhostStates> eatenList = new List<GhostStates>();
 
     void Start() {
         
@@ -105,10 +107,21 @@ public class LevelManager : MonoBehaviour {
     void RunGame() {
         setTime();
         setScore();
+        checkEaten();
         if (powerPelletEaten) { ghostTimerPanel.SetActive(true); StartScared(); } else {ghostTimerPanel.SetActive(false);}
-        if (hasEaten > 0) { StartCoroutine(nameof(EatenTimer)); }
+        if (hasEaten > 0) {
+            StartCoroutine(EatenTimer(eatenGhost));
+        }
         checkGhosts();
         selectClip();  
+    }
+
+    void checkEaten() {
+        foreach (GhostStates gs in allGhosts) {
+            if (gs.currentState == GhostStates.State.eaten) {
+                eatenGhost = gs;
+            }
+        }
     }
 
     void SaveScore() {
@@ -189,13 +202,11 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    IEnumerator EatenTimer() {
+    IEnumerator EatenTimer(GhostStates ghost) {
         yield return new WaitForSeconds(deadtime);
-        foreach (GhostStates gs in allGhosts) {
-            if (gs.currentState == GhostStates.State.eaten) {
-                gs.currentState = GhostStates.State.normal;
-                hasEaten--;
-            }
+        if (ghost.currentState == GhostStates.State.eaten) {
+            ghost.currentState = GhostStates.State.normal;
+            hasEaten--;
         }
     }
 
