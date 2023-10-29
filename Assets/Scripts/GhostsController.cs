@@ -11,6 +11,7 @@ public class GhostsController : MonoBehaviour {
     [SerializeField] private bool isMoving = false;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask ghostWallLayer;
+    private LayerMask originalGhostWallLayer;
     [SerializeField] private string currentInput;
     [SerializeField] private string lastInput;
     private bool canRight = false;
@@ -21,6 +22,7 @@ public class GhostsController : MonoBehaviour {
     [SerializeField] private LevelManager lvlMgr;
 
     void Start() {
+        originalGhostWallLayer = ghostWallLayer;
         tweener = GetComponent<Tweener>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
@@ -151,7 +153,15 @@ public class GhostsController : MonoBehaviour {
     }
 
     void OnTriggerStay2D(Collider2D other) {
-        Debug.Log("Inside Something!");
+        if (other.gameObject.name.Contains("ghostHome")) {
+            ghostWallLayer &= ~LayerMask.GetMask("GhostWall");
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other) {
+        if (other.gameObject.name.Contains("ghostHome")) {
+            ghostWallLayer = originalGhostWallLayer;
+        }
     }
 
 }
