@@ -16,6 +16,7 @@ public class GhostsController : MonoBehaviour {
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask ghostWallLayer;
     private LayerMask originalGhostWallLayer;
+    private LayerMask originalWallLayer;
     public string currentInput;
     public string lastInput;
     private bool canRight = false;
@@ -25,20 +26,24 @@ public class GhostsController : MonoBehaviour {
     private Vector3 impactPos;
     [SerializeField] private LevelManager lvlMgr;
     private GhostStates states;
-    public enum Mode { runAway, chase, roundTheWorld, random }
+    public enum Mode { runAway, chase, roundTheWorld, random, home }
     public Mode currentMode;
     [SerializeField] private Mode thisGhostMode;
     [SerializeField] Vector3 targetPos;
     private int roundCounter = 0;
+    private Vector3 homePosition;
+    private bool isHome = false;
 
     void Start() {
         moveSpeed = fastSpeed;
         originalGhostWallLayer = ghostWallLayer;
+        originalWallLayer = wallLayer;
         tweener = GetComponent<Tweener>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
         currentInput = "Idle";
         states = GetComponent<GhostStates>();
+        homePosition = new Vector3(-2f,-4f, 0f);
     }
 
     void Update() {
@@ -56,6 +61,12 @@ public class GhostsController : MonoBehaviour {
             moveSpeed = fastSpeed;
         }
 
+        if (currentState == GhostStates.State.eaten && !isHome) {
+            currentMode = Mode.home;
+            moveSpeed = 10f;
+            wallLayer &= ~LayerMask.GetMask("Wall");
+        } else { wallLayer = originalWallLayer; }
+
         switch (currentMode) {
             case Mode.runAway:
                 RunAway(); break;
@@ -65,6 +76,8 @@ public class GhostsController : MonoBehaviour {
                 RoundRound(); break;
             case Mode.random:
                 MoveRandom(); break;
+            case Mode.home:
+                GoHome(); break;
         }
 
         if (currentInput == "Idle") {
@@ -169,13 +182,35 @@ public class GhostsController : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D other) {
         if (other.gameObject.name.Contains("ghostHome")) {
+            isHome = true;
             ghostWallLayer &= ~LayerMask.GetMask("GhostWall");
+
+            // GhostStates.State currentState = states.currentState;
+            // if (currentState == GhostStates.State.eaten) {
+            //     StartCoroutine(nameof(returnToNormal));
+            // }
         }
+    }
+
+    IEnumerator returnToNormal() {
+        yield return new WaitForSeconds(1f);
+        states.currentState = GhostStates.State.normal;
+        tweener.KillAllTweens();
+        if (transform.position != homePosition) { transform.position = homePosition; }
+        startPosition = transform.position;
+        transform.Translate(Vector3.zero);
     }
 
     void OnTriggerExit2D(Collider2D other) {
         if (other.gameObject.name.Contains("ghostHome")) {
             ghostWallLayer = originalGhostWallLayer;
+            isHome = false;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.name.Contains("ghostHome")) {
+            isHome = true;
         }
     }
 
@@ -355,6 +390,11 @@ public class GhostsController : MonoBehaviour {
         if (transform.position == targetPos) { roundCounter++; }
     }
 
+    void GoHome() {    
+        Chase();
+        ghostWallLayer &= ~LayerMask.GetMask("GhostWall");
+    }
+
     void GetTarget() {
         if (currentMode == Mode.runAway || currentMode == Mode.chase) {
             GameObject targetObj = GameObject.Find("Zombie");
@@ -370,7 +410,7 @@ public class GhostsController : MonoBehaviour {
                 case 6: targetPos = new Vector3(11f, 9f, 0f); break;
                 case 7: targetPos = new Vector3(11f, -10f, 0f); break;
             }
-        }
+        } else if (currentMode == Mode.home) { targetPos = homePosition; }
     }
 
 }
