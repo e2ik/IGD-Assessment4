@@ -5,10 +5,12 @@ using UnityEngine;
 public class ProjectileController : MonoBehaviour {
 
     [SerializeField] private string firedDirection;
+    private int projectilePower = 20;
     private PacStudentController ps;
     private Tweener tweener;
     private Vector3 startPosition;
     private Vector3 endPosition;
+    private GhostHealth ghostHealth;
 
     void Start() {
         GameObject zombie = GameObject.Find("Zombie");
@@ -72,6 +74,9 @@ public class ProjectileController : MonoBehaviour {
             Destroy(gameObject);
         } else if (otherName.Contains("hunter")) {
             Destroy(gameObject);
+            GameObject otherObj = other.gameObject;
+            ghostHealth = otherObj.GetComponent<GhostHealth>();
+            ghostHealth.currentHealth -= projectilePower;
         }
     }
 
