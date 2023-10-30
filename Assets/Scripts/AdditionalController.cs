@@ -9,14 +9,31 @@ public class AdditionalController : MonoBehaviour {
     private GameObject shotProjectile;
     [SerializeField] private int maxProjectiles = 5;
     [SerializeField] private int currentProjectiles;
+    [SerializeField] private RawImage camFog;
+    [SerializeField] LevelManager lvlMgr;
 
     void Start() {
         currentProjectiles = maxProjectiles;
     }
 
     void Update() {
+        if (!lvlMgr.PauseGame) { UpdateGame();}
+    }
+
+    void UpdateGame() {
         if (Input.GetKeyDown(KeyCode.Space)) {
             if (currentProjectiles > 0) ShootProjectile();
+        }
+        if (camFog != null) {
+            Transform fogTransform = camFog.transform;
+            switch (currentProjectiles) {
+                case 0: fogTransform.localScale = new Vector3(0.85f,0.85f,1f); break;
+                case 1: fogTransform.localScale = new Vector3(0.88f,0.88f,1f); break;
+                case 2: fogTransform.localScale = new Vector3(0.9f,0.9f,1f); break;
+                case 3: fogTransform.localScale = new Vector3(0.93f,0.93f,1f); break;
+                case 4: fogTransform.localScale = new Vector3(1f,1f,1f); break;
+                case 5: fogTransform.localScale = new Vector3(1.2f,1.2f,1f); break;
+            }
         }
     }
 

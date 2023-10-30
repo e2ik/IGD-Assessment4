@@ -40477,7 +40477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostHealth: 100
   currentHealth: 0
-  gs: {fileID: 0}
+  gs: {fileID: 1492294830}
 --- !u!1001 &1494505970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46656,7 +46656,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1553937675
 RectTransform:
   m_ObjectHideFlags: 0
@@ -46666,7 +46666,7 @@ RectTransform:
   m_GameObject: {fileID: 1553937674}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1760254315}
@@ -50037,7 +50037,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostHealth: 100
   currentHealth: 0
-  gs: {fileID: 1706865876}
+  gs: {fileID: 0}
 --- !u!1001 &1713062431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61124,6 +61124,8 @@ MonoBehaviour:
   projectileObj: {fileID: 2860820321565290423, guid: da01a2010f6d4f54f9784991d5f2d094, type: 3}
   maxProjectiles: 5
   currentProjectiles: 0
+  camFog: {fileID: 1553937676}
+  lvlMgr: {fileID: 210036606}
 --- !u!1001 &1952893018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65573,7 +65575,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostHealth: 100
   currentHealth: 0
-  gs: {fileID: 0}
+  gs: {fileID: 2110433766}
 --- !u!1001 &2110892987
 PrefabInstance:
   m_ObjectHideFlags: 0

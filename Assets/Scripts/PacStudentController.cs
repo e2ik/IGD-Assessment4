@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PacStudentController : MonoBehaviour {
 
@@ -27,6 +28,9 @@ public class PacStudentController : MonoBehaviour {
     [SerializeField] private GameObject leftPort;
     [SerializeField] private GameObject rightPort;
     [SerializeField] private LevelManager lvlMgr;
+    private float doubleTapTheshold = 0.2f;
+    private float lastTapTime;
+    private bool isDoubleTap = false;
 
     void Start() {
         audioSource = GetComponent<AudioSource>();
@@ -46,7 +50,36 @@ public class PacStudentController : MonoBehaviour {
         if (!lvlMgr.PauseGame) { UpdateGame(); }
     }
 
+    void UpdateControl() {
+
+        if (Input.GetKeyDown(KeyCode.W)) {
+            float currentTime = Time.time;
+            if (currentTime - lastTapTime < doubleTapTheshold) {
+                isDoubleTap = true;
+                lastTapTime = 0f;
+            } else {
+                lastTapTime = currentTime;
+            }
+        }
+
+        if (isDoubleTap) {
+            StartCoroutine(nameof(SpeedUp));
+        }
+        isDoubleTap = false;
+    }
+
+    IEnumerator SpeedUp() {
+        float storeSpeed = moveSpeed;
+        moveSpeed = 7f;
+        yield return new WaitForSeconds(0.6f);
+        moveSpeed = storeSpeed;
+    }
+
     void UpdateGame() {
+
+        if (SceneManager.GetActiveScene().buildIndex == 2) {
+            UpdateControl();
+        }
 
         if (lvlMgr.numOfPellets == 0) { lvlMgr.PauseGame = true; StartCoroutine(nameof(GameOver)); }
 
