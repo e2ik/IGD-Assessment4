@@ -32,6 +32,7 @@ public class GhostsController : MonoBehaviour {
     private int roundCounter = 0;
     private Vector3 homePosition;
     public bool isHome = false;
+    private bool stopUpdate = false;
 
     void Start() {
         moveSpeed = fastSpeed;
@@ -46,7 +47,9 @@ public class GhostsController : MonoBehaviour {
     }
 
     void Update() {
-        if (!lvlMgr.PauseGame) { UpdateGame(); }
+        if (!stopUpdate) {
+            if (!lvlMgr.PauseGame) { UpdateGame(); }
+        }
     }
 
     void UpdateGame() {
@@ -179,6 +182,28 @@ public class GhostsController : MonoBehaviour {
 
         if (hit.collider != null) { return true; }
         return false;
+    }
+
+    IEnumerator GhostStruck() {
+        SpriteRenderer rend = GetComponent<SpriteRenderer>();
+        rend.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        rend.color = Color.white;
+        yield return new WaitForSeconds(0.1f);
+        rend.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        rend.color = Color.white;
+        yield return new WaitForSeconds(0.5f);
+        stopUpdate = false;
+
+    }
+
+    void OnCollisionEnter2D (Collision2D other) {
+        string otherName = other.gameObject.name.ToLower();
+        if (otherName.Contains("projectile")) {
+            stopUpdate = true;
+            StartCoroutine(nameof(GhostStruck));
+        }
     }
 
     void OnTriggerStay2D(Collider2D other) {

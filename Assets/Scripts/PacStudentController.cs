@@ -13,8 +13,8 @@ public class PacStudentController : MonoBehaviour {
     [SerializeField] private bool isMoving = false;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask edibleLayer;
-    [SerializeField] private string currentInput;
-    [SerializeField] private string lastInput;
+    public string currentInput;
+    public string lastInput;
     private bool canRight = false;
     private bool canLeft = false;
     private bool canUp = false;
