@@ -9,11 +9,9 @@ public class AdditionalController : MonoBehaviour {
     private GameObject shotProjectile;
     [SerializeField] private int maxProjectiles = 5;
     [SerializeField] private int currentProjectiles;
-    private Tweener tweener;
 
     void Start() {
         currentProjectiles = maxProjectiles;
-        tweener = GetComponent<Tweener>();
     }
 
     void Update() {
@@ -25,8 +23,14 @@ public class AdditionalController : MonoBehaviour {
     void ShootProjectile() {
         if (shotProjectile == null) {
             shotProjectile = Instantiate(projectileObj, transform.position, Quaternion.identity);
+            StartCoroutine(DespawnProjectile(shotProjectile));
             currentProjectiles--;
         }
+    }
+
+    IEnumerator DespawnProjectile(GameObject projectile) {
+        yield return new WaitForSeconds(1.5f);
+        Destroy(projectile);
     }
 
     void OnCollisionEnter2D(Collision2D other) {
