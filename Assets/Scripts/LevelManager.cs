@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour {
 
@@ -124,18 +125,20 @@ public class LevelManager : MonoBehaviour {
     }
 
     void SaveScore() {
-        currentTime = timerTextTMP.text;
-        if (PlayerPrefs.HasKey("HighScore") && PlayerPrefs.HasKey("BestTime")) {
-            highScore = PlayerPrefs.GetString("HighScore");
-            bestTime = PlayerPrefs.GetString("BestTime");
-            string newHighScore = CalculateHigherScore(currentScore, highScore);
-            if (newHighScore == currentScore) {
+        if (SceneManager.GetActiveScene().buildIndex == 1) {
+            currentTime = timerTextTMP.text;
+            if (PlayerPrefs.HasKey("HighScore") && PlayerPrefs.HasKey("BestTime")) {
+                highScore = PlayerPrefs.GetString("HighScore");
+                bestTime = PlayerPrefs.GetString("BestTime");
+                string newHighScore = CalculateHigherScore(currentScore, highScore);
+                if (newHighScore == currentScore) {
+                    PlayerPrefs.SetString("HighScore", currentScore);
+                    PlayerPrefs.SetString("BestTime", currentTime);
+                }
+            } else {
                 PlayerPrefs.SetString("HighScore", currentScore);
                 PlayerPrefs.SetString("BestTime", currentTime);
             }
-        } else {
-            PlayerPrefs.SetString("HighScore", currentScore);
-            PlayerPrefs.SetString("BestTime", currentTime);
         }
     }
 
