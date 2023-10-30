@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +12,32 @@ public class AdditionalController : MonoBehaviour {
     [SerializeField] private int currentProjectiles;
     [SerializeField] private RawImage camFog;
     [SerializeField] LevelManager lvlMgr;
+    [SerializeField] private int dashCount;
+    [SerializeField] private GameObject dashOne;
+    [SerializeField] private GameObject dashTwo;
+    [SerializeField] private TextMeshProUGUI ammoCount;
+
 
     void Start() {
         currentProjectiles = maxProjectiles;
+        
     }
 
     void Update() {
         if (!lvlMgr.PauseGame) { UpdateGame();}
+        ammoCount.text = currentProjectiles.ToString();
+        PacStudentController ps = GetComponent<PacStudentController>();
+        dashCount = ps.currentDashCharge;
+        if (dashCount == 2) {
+            dashOne.SetActive(true);
+            dashTwo.SetActive(true);
+        } else if (dashCount == 1) {
+            dashOne.SetActive(true);
+            dashTwo.SetActive(false);
+        } else {
+            dashOne.SetActive(false);
+            dashTwo.SetActive(false);
+        }
     }
 
     void UpdateGame() {

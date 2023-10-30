@@ -31,8 +31,13 @@ public class PacStudentController : MonoBehaviour {
     private float doubleTapTheshold = 0.2f;
     private float lastTapTime;
     private bool isDoubleTap = false;
+    private int maxDashCharge = 2;
+    public int currentDashCharge;
+    private float dashCoolDown = 10f;
+    private KeyCode lastKey = KeyCode.None;
 
     void Start() {
+        currentDashCharge = maxDashCharge;
         audioSource = GetComponent<AudioSource>();
         tweener = GetComponent<Tweener>();
         animator = GetComponent<Animator>();
@@ -52,20 +57,34 @@ public class PacStudentController : MonoBehaviour {
 
     void UpdateControl() {
 
-        if (Input.GetKeyDown(KeyCode.W)) {
+        if (Input.anyKeyDown) {
+            KeyCode currentKey = GetPressedKey();
             float currentTime = Time.time;
-            if (currentTime - lastTapTime < doubleTapTheshold) {
+            if (currentKey == lastKey && currentTime - lastTapTime < doubleTapTheshold) {
                 isDoubleTap = true;
                 lastTapTime = 0f;
+                lastKey = KeyCode.None;
             } else {
+                lastKey = currentKey;
                 lastTapTime = currentTime;
             }
         }
 
         if (isDoubleTap) {
-            StartCoroutine(nameof(SpeedUp));
+            if (currentDashCharge > 0) {
+                currentDashCharge--;
+                StartCoroutine(nameof(SpeedUp));
+                StartCoroutine(nameof(DashCoolDown));
+            }
         }
         isDoubleTap = false;
+    }
+
+    KeyCode GetPressedKey() {
+        foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode))) {
+            if (Input.GetKeyDown(key)) { return key; }
+        }
+        return KeyCode.None;
     }
 
     IEnumerator SpeedUp() {
@@ -73,6 +92,13 @@ public class PacStudentController : MonoBehaviour {
         moveSpeed = 7f;
         yield return new WaitForSeconds(0.6f);
         moveSpeed = storeSpeed;
+    }
+
+    IEnumerator DashCoolDown() {
+        yield return new WaitForSeconds(dashCoolDown);
+        if (currentDashCharge < maxDashCharge) {
+            currentDashCharge++;
+        }
     }
 
     void UpdateGame() {
