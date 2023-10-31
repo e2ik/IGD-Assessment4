@@ -37,3 +37,35 @@ Acitivity Log
 3 Oct 2023
 - Final Checks
 - Checked animator with Emma
+
+25 Oct 2023
+- Removed demo sprites
+- Tweaked Ghost and PacStudent animation controllers
+
+27 Oct 2023
+- Created Senes
+- Created UI elements
+- Works for 16:9 or 4:3 but no scaling apart from the top/bottom border
+- UI will never exceed normal resolutions
+
+28 Oct 2023
+- Pacstudent movement created
+- Cherry Spawner created
+
+29 Oct 2023
+- Collision detection tweaked
+- Force Pacman bump into wall logic
+- Particle effects added to PacStudent
+- Teleporters added
+- Scoring System refined
+- GhostMovement added
+- GhostBehaviour + States added
+
+30
+- Level 2 created
+- Dash charge + coolden
+- Ammo acount
+- View restriction camera centering
+- HP bar added to ghosts
+- projectile implemented
+
