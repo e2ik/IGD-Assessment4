@@ -11,6 +11,7 @@ public class PacStudentController : MonoBehaviour {
     private Vector3 startPosition;
     private Vector3 endPosition;
     [SerializeField] private float moveSpeed = 4.0f;
+    [SerializeField] private float dashSpeed = 3f;
     [SerializeField] private bool isMoving = false;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask edibleLayer;
@@ -35,6 +36,7 @@ public class PacStudentController : MonoBehaviour {
     public int currentDashCharge;
     private float dashCoolDown = 10f;
     private KeyCode lastKey = KeyCode.None;
+    private bool isDashing = false;
 
     void Start() {
         currentDashCharge = maxDashCharge;
@@ -71,7 +73,7 @@ public class PacStudentController : MonoBehaviour {
         }
 
         if (isDoubleTap) {
-            if (currentDashCharge > 0) {
+            if (currentDashCharge > 0 && !isDashing) {
                 currentDashCharge--;
                 StartCoroutine(nameof(SpeedUp));
                 StartCoroutine(nameof(DashCoolDown));
@@ -88,10 +90,11 @@ public class PacStudentController : MonoBehaviour {
     }
 
     IEnumerator SpeedUp() {
-        float storeSpeed = moveSpeed;
-        moveSpeed = 7f;
+        isDashing = true;
+        moveSpeed += dashSpeed;
         yield return new WaitForSeconds(0.6f);
-        moveSpeed = storeSpeed;
+        moveSpeed -= dashSpeed;
+        isDashing = false;
     }
 
     IEnumerator DashCoolDown() {
@@ -304,7 +307,6 @@ public class PacStudentController : MonoBehaviour {
                 audioSource.Play();
             }
         }
-        
     }
 
     IEnumerator Move() {

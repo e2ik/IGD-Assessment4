@@ -76,7 +76,7 @@ public class ProjectileController : MonoBehaviour {
             Destroy(gameObject);
             GameObject otherObj = other.gameObject;
             ghostHealth = otherObj.GetComponent<GhostHealth>();
-            ghostHealth.currentHealth -= projectilePower;
+            if (ghostHealth.currentHealth != -1) ghostHealth.currentHealth -= projectilePower;
         }
     }
 

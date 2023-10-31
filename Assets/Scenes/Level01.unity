@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -60847,6 +60847,7 @@ MonoBehaviour:
   leftPort: {fileID: 1788187758}
   rightPort: {fileID: 1063146634}
   lvlMgr: {fileID: 210036606}
+  currentDashCharge: 0
 --- !u!50 &1948569673
 Rigidbody2D:
   serializedVersion: 4

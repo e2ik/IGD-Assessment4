@@ -42,7 +42,8 @@ public class AdditionalController : MonoBehaviour {
 
     void UpdateGame() {
         if (Input.GetKeyDown(KeyCode.Space)) {
-            if (currentProjectiles > 0) ShootProjectile();
+            PacStudentController ps = GetComponent<PacStudentController>();
+            if (currentProjectiles > 0 && ps.currentInput != "Idle") ShootProjectile();
         }
         if (camFog != null) {
             Transform fogTransform = camFog.transform;
