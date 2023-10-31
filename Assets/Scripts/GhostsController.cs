@@ -178,7 +178,6 @@ public class GhostsController : MonoBehaviour {
         float rayDistance = 0.6f;
         LayerMask combinedLayers = wallLayer | ghostWallLayer;
         RaycastHit2D hit = Physics2D.BoxCast(startPos, new Vector2(0.5f, 0.5f), 0f, direction, rayDistance, combinedLayers);
-        Debug.DrawRay(startPos, direction * rayDistance, Color.red);
 
         if (hit.collider != null) { return true; }
         return false;
