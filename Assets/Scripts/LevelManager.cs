@@ -133,12 +133,33 @@ public class LevelManager : MonoBehaviour {
                 string newHighScore = CalculateHigherScore(currentScore, highScore);
                 if (newHighScore == currentScore) {
                     PlayerPrefs.SetString("HighScore", currentScore);
-                    PlayerPrefs.SetString("BestTime", currentTime);
+                    string fasterTime = CalculateFasterTime(currentTime, bestTime);
+                    PlayerPrefs.SetString("BestTime", fasterTime);
                 }
             } else {
                 PlayerPrefs.SetString("HighScore", currentScore);
                 PlayerPrefs.SetString("BestTime", currentTime);
             }
+        }
+    }
+
+    string CalculateFasterTime(string currentTime, string bestTime) {
+        string[] currentTimeParts = currentTime.Split(':');
+        string[] bestTimeParts = bestTime.Split(':');
+        
+        int currentMinutes = int.Parse(currentTimeParts[0]);
+        int bestMinutes = int.Parse(bestTimeParts[0]);
+        int currentSeconds = int.Parse(currentTimeParts[1]);
+        int bestSeconds = int.Parse(bestTimeParts[1]);
+        int currentMilliseconds = int.Parse(currentTimeParts[2]);
+        int bestMilliseconds = int.Parse(bestTimeParts[2]);
+
+        if (currentMinutes < bestMinutes || (currentMinutes == bestMinutes && 
+            (currentSeconds < bestSeconds || (currentSeconds == bestSeconds && 
+            currentMilliseconds < bestMilliseconds)))) {
+            return currentTime;
+        } else {
+            return bestTime;
         }
     }
 
