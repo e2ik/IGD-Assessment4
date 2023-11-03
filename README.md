@@ -1,5 +1,5 @@
-# IGD-UTS-PacStudent
-Introduction to Games Development - Sping 2023 - Assessment 3 - PacStudent
+# IGD-Asessment4
+Introduction to Games Development - Sping 2023 - Assessment 4 - PacStudent
 
 Acitivity Log
 -------------
